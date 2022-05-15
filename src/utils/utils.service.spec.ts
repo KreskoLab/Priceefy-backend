@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { UtilsService } from "./utils.service";
 
-describe("CatsController", () => {
+describe("UtilsService", () => {
   let utilsService: UtilsService;
 
   beforeEach(async () => {
@@ -73,6 +73,10 @@ describe("CatsController", () => {
 
     it("should return product name without unit", async () => {
       expect(utilsService.normalizeName("Манго, шт")).toBe("Манго");
+    });
+
+    it("should return product name without parenthesis", async () => {
+      expect(utilsService.normalizeName("Манго дрібний калібр А (100-350г)")).toBe("Манго дрібний");
     });
   });
 });
