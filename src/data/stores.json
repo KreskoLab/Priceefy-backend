@@ -1,0 +1,89 @@
+[
+  {
+    "name": "Ашан",
+    "slug": "auchan",
+    "cities": [
+      {
+        "name": "Київ",
+        "slug": "kyiv",
+        "id": "48246414"
+      },
+      {
+        "name": "Львів",
+        "slug": "lviv",
+        "id": "48246409"
+      },
+      {
+        "name": "Дніпро",
+        "slug": "dnipro",
+        "id": "48246429"
+      },
+      {
+        "name": "Одеса",
+        "slug": "odesa",
+        "id": "48246416"
+      },
+      {
+        "name": "Харків",
+        "slug": "kharkiv",
+        "id": "48246426"
+      }
+    ]
+  },
+
+  {
+    "name": "Novus",
+    "slug": "novus",
+    "cities": [
+      {
+        "name": "Київ",
+        "slug": "kyiv",
+        "id": "48201029"
+      }
+    ]
+  },
+
+  {
+    "name": "ЕКО маркет",
+    "slug": "eko",
+    "cities": [
+      {
+        "name": "Київ",
+        "slug": "kyiv",
+        "id": "48280187"
+      }
+    ]
+  },
+
+  {
+    "name": "Сільпо",
+    "slug": "silpo",
+    "cities": [
+      {
+        "name": "Київ",
+        "slug": "kyiv",
+        "id": "2406"
+      },
+      {
+        "name": "Львів",
+        "slug": "lviv",
+        "id": "2112"
+      },
+      {
+        "name": "Одеса",
+        "slug": "odesa",
+        "id": "2638"
+      },
+      {
+        "name": "Дніпро",
+        "slug": "dnipro",
+        "id": "2273"
+      },
+      {
+        "name": "Харків",
+        "slug": "kharkiv",
+        "id": "2508"
+      }
+    ]
+  }
+]

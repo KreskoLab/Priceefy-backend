@@ -1,0 +1,300 @@
+[
+  {
+    "name": "Овочі",
+    "slug": "ovochi",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "vegetables"
+      },
+      {
+        "slug": "auchan",
+        "id": "vegetables-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "vegetables-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "378"
+      }
+    ]
+  },
+
+  {
+    "name": "Фрукти",
+    "slug": "frukti",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "fruits"
+      },
+      {
+        "slug": "auchan",
+        "id": "fruits-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "fruits-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "381"
+      }
+    ]
+  },
+
+  {
+    "name": "Молоко",
+    "slug": "moloko",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "milk"
+      },
+      {
+        "slug": "auchan",
+        "id": "milk-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "milk-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "253"
+      }
+    ]
+  },
+
+  {
+    "name": "Сметана",
+    "slug": "smetana",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "sour-cream"
+      },
+      {
+        "slug": "auchan",
+        "id": "sour-cream-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "sour-cream-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "252"
+      }
+    ]
+  },
+
+  {
+    "name": "Кисломолочні напої",
+    "slug": "kislomolochni-napoyi",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "milk-drinks"
+      },
+      {
+        "slug": "auchan",
+        "id": "milk-drinks-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "sour-milk-drinks-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "250"
+      }
+    ]
+  },
+
+  {
+    "name": "Яйця",
+    "slug": "yajcya",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "eggs"
+      },
+      {
+        "slug": "auchan",
+        "id": "eggs-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "eggs-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "528"
+      }
+    ]
+  },
+
+  {
+    "name": "Хліб",
+    "slug": "hlib",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "bread"
+      },
+      {
+        "slug": "auchan",
+        "id": "bread-own-bakery-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "bread-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "487"
+      }
+    ]
+  },
+
+  {
+    "name": "Солодка вода",
+    "slug": "solodka-voda",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "soft-drinks"
+      },
+      {
+        "slug": "auchan",
+        "id": "soft-drinks-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "soft-drinks-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "56"
+      }
+    ]
+  },
+
+  {
+    "name": "Сік",
+    "slug": "sik",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "juice"
+      },
+      {
+        "slug": "auchan",
+        "id": "juice-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "juices-and-nectars-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "63"
+      }
+    ]
+  },
+
+  {
+    "name": "Чіпси",
+    "slug": "chipsi",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "chips"
+      },
+      {
+        "slug": "auchan",
+        "id": "chips-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "chips-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "313"
+      }
+    ]
+  },
+
+  {
+    "name": "Шоколад",
+    "slug": "shokolad",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "block-chocolate"
+      },
+      {
+        "slug": "auchan",
+        "id": "chocolate-bars-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "chocolate-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "505"
+      }
+    ]
+  },
+
+  {
+    "name": "Морозиво",
+    "slug": "morozivo",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "icecream"
+      },
+      {
+        "slug": "auchan",
+        "id": "icecream-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "icecream-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "265"
+      }
+    ]
+  },
+
+  {
+    "name": "Пиво",
+    "slug": "pivo",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "beer"
+      },
+      {
+        "slug": "auchan",
+        "id": "beer-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "beer-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "38"
+      }
+    ]
+  }
+]
