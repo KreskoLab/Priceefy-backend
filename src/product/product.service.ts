@@ -25,21 +25,6 @@ export class ProductService {
       bulkDocs.push(bulkDoc);
     });
 
-    // for (const product of products) {
-    //   const bulkDoc = {
-    //     updateOne: {
-    //       filter: { slug: product.slug, weight: product.weight, unit: product.unit },
-    //       update: {
-    //         $setOnInsert: product,
-    //         $addToSet: { prices: product.price._id },
-    //       },
-    //       upsert: true,
-    //     },
-    //   };
-
-    //   bulkDocs.push(bulkDoc);
-    // }
-
     await this.productRepository.create(bulkDocs);
   }
 
