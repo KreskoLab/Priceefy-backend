@@ -7,7 +7,7 @@ import { ProductRepository } from "./product.repository";
 export class ProductService {
   constructor(private readonly productRepository: ProductRepository) {}
 
-  async create(products: Array<CreateProductDto>): Promise<void> {
+  async create(products: CreateProductDto[]): Promise<void> {
     const bulkDocs = [];
 
     products.forEach(({ price, ...rest }) => {
@@ -16,18 +16,19 @@ export class ProductService {
           filter: { slug: rest.slug, weight: rest.weight, unit: rest.unit },
           update: {
             $setOnInsert: rest,
-            $addToSet: { prices: price._id },
+            $push: { prices: price._id },
           },
           upsert: true,
         },
       };
+
       bulkDocs.push(bulkDoc);
     });
 
     await this.productRepository.create(bulkDocs);
   }
 
-  async findManyIds(slugs: Array<string>): Promise<Array<Product>> {
+  async findManyIds(slugs: string[]): Promise<Product[]> {
     return this.productRepository.findProductsCategoriesIdsInArray(slugs);
   }
 }
