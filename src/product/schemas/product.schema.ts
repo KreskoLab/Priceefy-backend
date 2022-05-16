@@ -8,7 +8,7 @@ export type ProductDocument = Product & Document;
 
 @Schema()
 export class Product {
-  @Prop({ type: mongoose.Types.ObjectId })
+  @Prop()
   _id: string;
 
   @Prop({ required: true })

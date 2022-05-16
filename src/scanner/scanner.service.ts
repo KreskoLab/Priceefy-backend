@@ -186,7 +186,7 @@ export class ScannerService {
           discount_end: result.discount.status
             ? this.utilsService.handleDiscountDate(result.discount.due_date, target.store)
             : new Date(),
-          createdAt: new Date().setHours(0, 0, 0, 0),
+          createdAt: new Date().valueOf(),
         },
         country: result.country !== null ? result.country : "",
         trademark: result.producer.trademark || "без тм",
@@ -199,16 +199,17 @@ export class ScannerService {
     return { products, count };
   }
 
-  async handleProducts(products: Array<ProductInterface>): Promise<string[]> {
-    const prices = products.map((product: ProductInterface) => product.price);
+  async handleProducts(products: ProductInterface[]): Promise<string[]> {
+    const prices = products.map((product) => product.price);
 
     await this.priceService.create(prices);
 
     const stores = [...new Set<string>(prices.map((price) => price.store))];
     const cities = [...new Set<string>(prices.map((price) => price.city))];
+    const createAt = [...new Set<number>(prices.map((price) => price.createdAt))];
     const priceProducts = prices.map((price) => price.product);
 
-    await this.priceService.findManyIds(stores, cities, priceProducts).then((ids) => {
+    await this.priceService.findManyIds(stores, cities, createAt, priceProducts).then((ids) => {
       products.forEach((product, index, arr) => {
         arr[index].price._id = ids.find((id) => id.product === product.slug)._id;
       });

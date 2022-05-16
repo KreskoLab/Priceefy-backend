@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose from "mongoose";
 
 export type PriceDocument = Price & Document;
 
@@ -30,7 +29,7 @@ export class Price {
   createdAt: number;
 
   @Prop()
-  _id: mongoose.Types.ObjectId;
+  _id: string;
 }
 
 export const PriceSchema = SchemaFactory.createForClass(Price);

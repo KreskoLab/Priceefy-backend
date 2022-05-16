@@ -30,11 +30,12 @@ export class PriceService {
     await this.priceModel.bulkWrite(bulkDocs);
   }
 
-  async findManyIds(stores: string[], cities: string[], products: string[]): Promise<Array<Price>> {
+  async findManyIds(stores: string[], cities: string[], createdAt: number[], products: string[]): Promise<Price[]> {
     return this.priceModel.find(
       {
         store: { $in: stores },
         city: { $in: cities },
+        createdAt: { $in: createdAt },
         product: { $in: products },
       },
       { _id: 1, product: 1 },

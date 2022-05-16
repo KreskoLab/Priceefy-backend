@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export interface CreatePriceDto {
-  _id?: mongoose.Types.ObjectId;
+  _id?: string;
   product: string;
   store: string;
   city: string;
