@@ -186,7 +186,7 @@ export class ScannerService {
           discount_end: result.discount.status
             ? this.utilsService.handleDiscountDate(result.discount.due_date, target.store)
             : new Date(),
-          createdAt: new Date().valueOf(),
+          createdAt: new Date().setHours(0, 0, 0, 0),
         },
         country: result.country !== null ? result.country : "",
         trademark: result.producer.trademark || "без тм",
