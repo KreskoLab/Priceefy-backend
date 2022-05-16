@@ -6,13 +6,13 @@ import { CreateProductDto } from "./dto/create-product.dto";
 
 @Injectable()
 export class ProductRepository {
-  constructor(@InjectModel("Product") private readonly model: Model<Product>) {}
+  constructor(@InjectModel("Product") private model: Model<Product>) {}
 
   async create(products: CreateProductDto[]): Promise<void> {
     await this.model.bulkWrite(products);
   }
 
   async findProductsCategoriesIdsInArray(slugs: string[]): Promise<Product[]> {
-    return await this.model.find({ slug: { $in: slugs } }, { category: 1 });
+    return this.model.find({ slug: { $in: slugs } }, { category: 1 });
   }
 }
