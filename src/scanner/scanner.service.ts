@@ -28,7 +28,7 @@ export class ScannerService {
     @InjectQueue("scanner") private scannerQueue: Queue,
   ) {}
 
-  @Cron(CronExpression[process.env.CRON_TIME])
+  @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async load(): Promise<void> {
     const storesJSON = "/src/data/stores.json";
     const catagoriesJSON = "/src/data/categories.json";
@@ -160,15 +160,15 @@ export class ScannerService {
         if (result.pack_amount && result.unit === "pcs") {
           ({ weight, unit } = this.utilsService.handleWeightAndUnit(result.pack_amount, result.unit));
         } else ({ weight, unit } = this.utilsService.handleWeightAndUnit(result.volume, "мл"));
+      } else {
+        if (result.pack_amount && result.unit === "pcs") {
+          ({ weight, unit } = this.utilsService.handleWeightAndUnit(result.pack_amount, result.unit));
+        } else
+          ({ weight, unit } = this.utilsService.handleWeightAndUnit(
+            result.weight === 0 ? result.bundle : result.weight,
+            result.unit,
+          ));
       }
-
-      if (result.pack_amount && result.unit === "pcs") {
-        ({ weight, unit } = this.utilsService.handleWeightAndUnit(result.pack_amount, result.unit));
-      } else
-        ({ weight, unit } = this.utilsService.handleWeightAndUnit(
-          result.weight === 0 ? result.bundle : result.weight,
-          result.unit,
-        ));
 
       const productSlug: string = this.utilsService.slugify(productName.toLowerCase() + "-" + weight + unit);
       const productPrice = Number(
