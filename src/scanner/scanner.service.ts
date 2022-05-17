@@ -28,7 +28,7 @@ export class ScannerService {
     @InjectQueue("scanner") private scannerQueue: Queue,
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_NOON)
+  @Cron(CronExpression[process.env.CRON_TIME])
   async load(): Promise<void> {
     const storesJSON = "/src/data/stores.json";
     const catagoriesJSON = "/src/data/categories.json";
