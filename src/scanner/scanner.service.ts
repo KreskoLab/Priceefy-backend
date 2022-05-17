@@ -98,7 +98,7 @@ export class ScannerService {
     for (const item of res.data.items) {
       const productName: string = this.utilsService.normalizeName(item.name);
 
-      const { weight, unit }: any = this.utilsService.handleWeightAndUnit(
+      const { weight, unit } = this.utilsService.handleWeightAndUnit(
         parseFloat(item.unit.replace(",", ".").replace(/[^0-9.]/g, "")),
         item.unit.replace(",", "").replace(/[0-9]/g, ""),
         target.categoryId,
@@ -157,12 +157,18 @@ export class ScannerService {
       let unit: string;
 
       if (result.volume) {
-        ({ weight, unit } = <any>this.utilsService.handleWeightAndUnit(result.volume, "мл"));
-      } else {
-        ({ weight, unit } = <any>(
-          this.utilsService.handleWeightAndUnit(result.weight === 0 ? result.bundle : result.weight, result.unit)
-        ));
+        if (result.pack_amount && result.unit === "pcs") {
+          ({ weight, unit } = this.utilsService.handleWeightAndUnit(result.pack_amount, result.unit));
+        } else ({ weight, unit } = this.utilsService.handleWeightAndUnit(result.volume, "мл"));
       }
+
+      if (result.pack_amount && result.unit === "pcs") {
+        ({ weight, unit } = this.utilsService.handleWeightAndUnit(result.pack_amount, result.unit));
+      } else
+        ({ weight, unit } = this.utilsService.handleWeightAndUnit(
+          result.weight === 0 ? result.bundle : result.weight,
+          result.unit,
+        ));
 
       const productSlug: string = this.utilsService.slugify(productName.toLowerCase() + "-" + weight + unit);
       const productPrice = Number(

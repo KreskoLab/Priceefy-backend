@@ -94,31 +94,36 @@ export class UtilsService {
     return normalizedName;
   }
 
-  handleWeightAndUnit(weight: number, unit: string, category?: string): object {
+  handleWeightAndUnit(weight: number, unit: string, category?: string) {
     switch (unit) {
       case "л":
       case "*л":
         return { weight: weight * 1000, unit: "ml" };
+
       case "мл":
         return { weight: weight, unit: "ml" };
+
       case "kg":
       case "кг":
         return { weight: weight, unit: "kg" };
+
       case "pcs":
         return weight > 10 ? { weight: weight, unit: "g" } : { weight: weight, unit: "pcs" };
+
       case "г":
       case "*г":
         return weight === 100 && (category === "378" || category === "381")
           ? { weight: 1, unit: "kg" }
           : { weight: weight, unit: "g" };
+
       case "шт":
-      case "шт/уп":
       case "уп":
       case "бух":
       case "пучок":
-        return { weight: 1, unit: "pcs" };
+        return { weight: weight, unit: "pcs" };
+
       default:
-        console.log(unit, "dada");
+        console.log(unit, "Unknown weight unit");
     }
   }
 
