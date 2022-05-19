@@ -90,8 +90,6 @@ export class ScannerService {
       ),
     );
 
-    res.data.items = res.data.items.filter((item) => item.storeQuantity === 1);
-
     const count: number = res.data.itemsCount;
     const products: Array<ProductInterface> = [];
 
