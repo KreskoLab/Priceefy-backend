@@ -1,0 +1,249 @@
+[
+  {
+    "name": "Овочі",
+    "slug": "vegetables",
+    "icon": "icons/vegetables.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "vegetables"
+      },
+      {
+        "slug": "auchan",
+        "id": "vegetables-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "vegetables-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "378"
+      }
+    ]
+  },
+
+  {
+    "name": "Фрукти",
+    "slug": "fruits",
+    "icon": "icons/fruits.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "fruits"
+      },
+      {
+        "slug": "auchan",
+        "id": "fruits-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "fruits-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "381"
+      }
+    ]
+  },
+
+  {
+    "name": "Молоко",
+    "slug": "milk",
+    "icon": "icons/milk.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "milk"
+      },
+      {
+        "slug": "auchan",
+        "id": "milk-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "milk-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "253"
+      }
+    ]
+  },
+
+  {
+    "name": "Солодка вода",
+    "slug": "soft-drinks",
+    "icon": "icons/soft-drinks.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "soft-drinks",
+        "tm": "&tm=fanta&tm=coca-cola&tm=7up&tm=sprite&tm=pepsi&tm=mirinda&tm=zhivchik"
+      },
+      {
+        "slug": "auchan",
+        "id": "soft-drinks-auchan",
+        "tm": "&tm=fanta&tm=coca-cola&tm=7up&tm=sprite&tm=pepsi&tm=mirinda&tm=zhivchik"
+      },
+      {
+        "slug": "eko",
+        "id": "soft-drinks-ekomarket",
+        "tm": "&tm=fanta&tm=coca-cola&tm=7up&tm=sprite&tm=pepsi&tm=mirinda&tm=zhivchik"
+      },
+      {
+        "slug": "silpo",
+        "id": "56",
+        "tm": ["1374", "2735", "69", "2345", "4042", "4437"]
+      }
+    ]
+  },
+
+  {
+    "name": "Сік",
+    "slug": "juice",
+    "icon": "icons/juice.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "juice"
+      },
+      {
+        "slug": "auchan",
+        "id": "juice-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "juices-and-nectars-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "63"
+      }
+    ]
+  },
+
+  {
+    "name": "Чіпси",
+    "slug": "crisps",
+    "icon": "icons/crisps.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "chips",
+        "tm": "&tm=chipsters&tm=lays&tm=pringles"
+      },
+      {
+        "slug": "auchan",
+        "id": "chips-auchan",
+        "tm": "&tm=chipsters&tm=lays&tm=pringles"
+      },
+      {
+        "slug": "eko",
+        "id": "chips-ekomarket",
+        "tm": "&tm=chipsters&tm=lays&tm=pringles"
+      },
+      {
+        "slug": "silpo",
+        "id": "313",
+        "tm": ["2292", "4556", "11320"]
+      }
+    ]
+  },
+
+  {
+    "name": "Зефір",
+    "slug": "marshmallow",
+    "icon": "icons/chocolate.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "marshmallow-and-gumdrop"
+      },
+      {
+        "slug": "auchan",
+        "id": "marshmallow-gumdrop-halva-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "marshmallow-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "504"
+      }
+    ]
+  },
+
+  {
+    "name": "Шоколад",
+    "slug": "chocolate",
+    "icon": "icons/chocolate.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "block-chocolate"
+      },
+      {
+        "slug": "auchan",
+        "id": "chocolate-bars-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "chocolate-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "505"
+      }
+    ]
+  },
+
+  {
+    "name": "Морозиво",
+    "slug": "icecream",
+    "icon": "icons/icecream.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "icecream"
+      },
+      {
+        "slug": "auchan",
+        "id": "icecream-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "icecream-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "265"
+      }
+    ]
+  },
+
+  {
+    "name": "М'ясо",
+    "slug": "meat",
+    "icon": "icons/chocolate.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "fresh-meat"
+      },
+      {
+        "slug": "auchan",
+        "id": "fresh-meat-auchan"
+      },
+      {
+        "slug": "eko",
+        "id": "fresh-meat-ekomarket"
+      },
+      {
+        "slug": "silpo",
+        "id": "278"
+      }
+    ]
+  }
+]

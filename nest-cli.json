@@ -1,4 +1,81 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "apps/api/src",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/api/tsconfig.app.json",
+    "assets": [
+      "data/*.json",
+      {
+        "include": "../../../libs/stores/src/data/*.json",
+        "outDir": "dist"
+      },
+      {
+        "include": "../../../libs/categories/src/data/*.json",
+        "outDir": "dist"
+      },
+      {
+        "include": "../../../apps/api/src/icons/**.*",
+        "outDir": "dist"
+      }
+    ]
+  },
+  "monorepo": true,
+  "root": "apps/api",
+  "projects": {
+    "api": {
+      "type": "application",
+      "root": "apps/api",
+      "entryFile": "main",
+      "sourceRoot": "apps/api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api/tsconfig.app.json"
+      }
+    },
+    "scanner": {
+      "type": "application",
+      "root": "apps/scanner",
+      "entryFile": "main",
+      "sourceRoot": "apps/scanner/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/scanner/tsconfig.app.json"
+      }
+    },
+    "utils": {
+      "type": "library",
+      "root": "libs/utils",
+      "entryFile": "index",
+      "sourceRoot": "libs/utils/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/utils/tsconfig.lib.json"
+      }
+    },
+    "products": {
+      "type": "library",
+      "root": "libs/products",
+      "entryFile": "index",
+      "sourceRoot": "libs/products/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/products/tsconfig.lib.json"
+      }
+    },
+    "categories": {
+      "type": "library",
+      "root": "libs/categories",
+      "entryFile": "index",
+      "sourceRoot": "libs/categories/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/categories/tsconfig.lib.json"
+      }
+    },
+    "stores": {
+      "type": "library",
+      "root": "libs/stores",
+      "entryFile": "index",
+      "sourceRoot": "libs/stores/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/stores/tsconfig.lib.json"
+      }
+    }
+  }
 }

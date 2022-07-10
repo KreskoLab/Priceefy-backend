@@ -16,6 +16,32 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/utils": [
+        "libs/utils/src"
+      ],
+      "@app/utils/*": [
+        "libs/utils/src/*"
+      ],
+      "@app/products": [
+        "libs/products/src"
+      ],
+      "@app/products/*": [
+        "libs/products/src/*"
+      ],
+      "@app/categories": [
+        "libs/categories/src"
+      ],
+      "@app/categories/*": [
+        "libs/categories/src/*"
+      ],
+      "@app/stores": [
+        "libs/stores/src"
+      ],
+      "@app/stores/*": [
+        "libs/stores/src/*"
+      ]
+    }
   }
 }
