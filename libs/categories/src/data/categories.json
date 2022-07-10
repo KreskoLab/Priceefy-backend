@@ -6,15 +6,18 @@
     "stores": [
       {
         "slug": "novus",
-        "id": "vegetables"
+        "id": "vegetables",
+        "tm": "&tm=without-brand"
       },
       {
         "slug": "auchan",
-        "id": "vegetables-auchan"
+        "id": "vegetables-auchan",
+        "tm": "&tm=without-brand"
       },
       {
         "slug": "eko",
-        "id": "vegetables-ekomarket"
+        "id": "vegetables-ekomarket",
+        "tm": "&tm=without-brand"
       },
       {
         "slug": "silpo",
@@ -30,15 +33,18 @@
     "stores": [
       {
         "slug": "novus",
-        "id": "fruits"
+        "id": "fruits",
+        "tm": "&tm=without-brand"
       },
       {
         "slug": "auchan",
-        "id": "fruits-auchan"
+        "id": "fruits-auchan",
+        "tm": "&tm=without-brand"
       },
       {
         "slug": "eko",
-        "id": "fruits-ekomarket"
+        "id": "fruits-ekomarket",
+        "tm": "&tm=without-brand"
       },
       {
         "slug": "silpo",
@@ -106,19 +112,23 @@
     "stores": [
       {
         "slug": "novus",
-        "id": "juice"
+        "id": "juice",
+        "tm": "&tm=capri-sonne&tm=galicia&tm=jaffa&tm=sochnyi&tm=sadochok&tm=nash-sik&tm=sandora&tm=rich"
       },
       {
         "slug": "auchan",
-        "id": "juice-auchan"
+        "id": "juice-auchan",
+        "tm": "&tm=capri-sonne&tm=galicia&tm=jaffa&tm=sochnyi&tm=sadochok&tm=nash-sik&tm=sandora&tm=rich"
       },
       {
         "slug": "eko",
-        "id": "juices-and-nectars-ekomarket"
+        "id": "juices-and-nectars-ekomarket",
+        "tm": "&tm=capri-sonne&tm=galicia&tm=jaffa&tm=sochnyi&tm=sadochok&tm=nash-sik&tm=sandora&tm=rich"
       },
       {
         "slug": "silpo",
-        "id": "63"
+        "id": "63",
+        "tm": [8426, 1637, 5421, 1044]
       }
     ]
   },
@@ -152,25 +162,57 @@
   },
 
   {
+    "name": "Печиво",
+    "slug": "cookies",
+    "icon": "icons/cookies.svg",
+    "stores": [
+      {
+        "slug": "novus",
+        "id": "cookies",
+        "tm": "&tm=avk&tm=yarych&tm=oreo&tm=konti&tm=roshen"
+      },
+      {
+        "slug": "auchan",
+        "id": "cookies-muffins-brownies-auchan",
+        "tm": "&tm=avk&tm=yarych&tm=oreo&tm=konti&tm=roshen"
+      },
+      {
+        "slug": "eko",
+        "id": "cookies-ekomarket",
+        "tm": "&tm=avk&tm=yarych&tm=oreo&tm=konti&tm=roshen"
+      },
+      {
+        "slug": "silpo",
+        "id": "501",
+        "tm": [2, 1007, 5772, 556, 6132]
+      }
+    ]
+  },
+
+  {
     "name": "Зефір",
     "slug": "marshmallow",
     "icon": "icons/chocolate.svg",
     "stores": [
       {
         "slug": "novus",
-        "id": "marshmallow-and-gumdrop"
+        "id": "marshmallow-and-gumdrop",
+        "tm": "&tm=maistri-smaku&tm=zhako&tm=boguslavna"
       },
       {
         "slug": "auchan",
-        "id": "marshmallow-gumdrop-halva-auchan"
+        "id": "marshmallow-gumdrop-halva-auchan",
+        "tm": "&tm=boguslavna&tm=zhako"
       },
       {
         "slug": "eko",
-        "id": "marshmallow-ekomarket"
+        "id": "marshmallow-ekomarket",
+        "tm": "&tm=pershii-riad&tm=zhako"
       },
       {
         "slug": "silpo",
-        "id": "504"
+        "id": "504",
+        "tm": [1062, 9666]
       }
     ]
   },
@@ -182,19 +224,23 @@
     "stores": [
       {
         "slug": "novus",
-        "id": "block-chocolate"
+        "id": "block-chocolate",
+        "tm": "&tm=milka&tm=millennium&tm=ritter-sport&tm=korona&tm=svitoch&tm=toblerone&tm=roshen"
       },
       {
         "slug": "auchan",
-        "id": "chocolate-bars-auchan"
+        "id": "chocolate-bars-auchan",
+        "tm": "&tm=ritter-sport&tm=roshen&tm=millennium&tm=milka&tm=toblerone&tm=korona&tm=svitoch"
       },
       {
         "slug": "eko",
-        "id": "chocolate-ekomarket"
+        "id": "chocolate-ekomarket",
+        "tm": "&tm=alpinella&tm=milka&tm=millennium&tm=ritter-sport&tm=roshen&tm=korona&tm=svitoch&tm=toblerone"
       },
       {
         "slug": "silpo",
-        "id": "505"
+        "id": "505",
+        "tm": [1007, 431, 1870, 2079, 1190, 7541, 5095, 18414]
       }
     ]
   },
@@ -230,19 +276,23 @@
     "stores": [
       {
         "slug": "novus",
-        "id": "fresh-meat"
+        "id": "fresh-meat",
+        "tm": "&tm=epikur&tm=without-brand&tm=nasha-riaba"
       },
       {
         "slug": "auchan",
-        "id": "fresh-meat-auchan"
+        "id": "fresh-meat-auchan",
+        "tm": "&tm=without-brand&tm=nasha-riaba"
       },
       {
         "slug": "eko",
-        "id": "fresh-meat-ekomarket"
+        "id": "fresh-meat-ekomarket",
+        "tm": "&tm=without-brand"
       },
       {
         "slug": "silpo",
-        "id": "278"
+        "id": "278",
+        "tm": [2550, 9666]
       }
     ]
   }
