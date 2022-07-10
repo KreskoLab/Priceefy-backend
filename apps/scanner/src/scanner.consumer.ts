@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { OnQueueActive, OnQueueCompleted, OnQueueError, OnQueueFailed, Process, Processor } from "@nestjs/bull";
 import { Job } from "bull";
 import { CategoriesService } from "@app/categories";
@@ -6,6 +7,7 @@ import { StoresService } from "@app/stores";
 import { ProductsAndCount } from "./interfaces/products-count.interface";
 import { Target } from "./interfaces/target.interface";
 import { ScannerService } from "./scanner.service";
+import { Logger } from "@nestjs/common";
 
 @Processor("scanner")
 export class ScannerConsumer {
@@ -14,6 +16,8 @@ export class ScannerConsumer {
     private readonly categoriesService: CategoriesService,
     private readonly storesService: StoresService,
   ) {}
+
+  private readonly logger = new Logger(ScannerConsumer.name);
 
   @Process("scan")
   async handleScanTarget(job: Job<Target>): Promise<void> {
@@ -70,23 +74,25 @@ export class ScannerConsumer {
 
   @OnQueueActive()
   onActive(job: Job<Target>) {
-    console.log(
-      `Processing job ${job.id} with data ${job.data.categorySlug} ${job.data.city} ${job.data.store} ${job.data.tm}`,
+    this.logger.log(
+      `Started scanning: category ${job.data.categorySlug.toUpperCase()}; city: ${job.data.city.toUpperCase()}; store: ${job.data.store.toUpperCase()}`,
     );
   }
 
   @OnQueueCompleted()
   onComplete(job: Job<Target>) {
-    console.log(`Complete job ${job.id} with data ${job.data.categorySlug} ${job.data.city} ${job.data.store}!`);
+    this.logger.log(
+      `Completed scanning ${job.data.categorySlug.toUpperCase()} category; city: ${job.data.city.toUpperCase()}; store: ${job.data.store.toUpperCase()}`,
+    );
   }
 
   @OnQueueError()
   onError(err: Error) {
-    console.log(`Cerror ${err}`);
+    this.logger.error(`Error: ${err}`);
   }
 
   @OnQueueFailed()
   onFailed(job: Job<Target>, err: Error) {
-    console.log(`failed ${err}`);
+    this.logger.error(`Scanning failed with error: ${err}`);
   }
 }
