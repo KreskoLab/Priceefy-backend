@@ -1,5 +1,5 @@
 import { CategoriesService } from "@app/categories";
-import { Product, ProductsService, Sort } from "@app/products";
+import { AggregationResults, ProductsService, Sort } from "@app/products";
 import { StoresService } from "@app/stores";
 import { City, LocalStore } from "@app/stores";
 import { Controller, Get, Param, Query } from "@nestjs/common";
@@ -32,7 +32,7 @@ export class ApiController {
     @Query("page") page = 1,
     @Query("sort") sort: Sort = "discount",
     @Query("city") city: string,
-  ): Promise<Product[]> {
+  ): Promise<AggregationResults> {
     return this.productsService.get(page, sort, city);
   }
 
@@ -43,7 +43,7 @@ export class ApiController {
     @Query("sort") sort: Sort = "discount",
     @Query("store") store: string,
     @Query("city") city: string,
-  ): Promise<any> {
+  ): Promise<AggregationResults> {
     return this.categoriesService.getProducts(slug, page, sort, store, city);
   }
 
@@ -53,7 +53,7 @@ export class ApiController {
     @Query("page") page = 1,
     @Query("sort") sort: Sort = "discount",
     @Query("city") city: string,
-  ): Promise<any> {
+  ): Promise<AggregationResults> {
     return this.storesService.getProducts(slug, page, sort, city);
   }
 }

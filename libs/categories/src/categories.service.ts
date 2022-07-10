@@ -4,7 +4,7 @@ import { Injectable } from "@nestjs/common";
 import { Category } from "./schemas/category.schema";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { LocalCategory } from "./interfaces/category.interface";
-import { ProductsResponse, Sort } from "@app/products";
+import { AggregationResults, ProductsResponse, Sort } from "@app/products";
 
 @Injectable()
 export class CategoriesService {
@@ -18,8 +18,15 @@ export class CategoriesService {
     return this.categoryRepository.getAllCategories();
   }
 
-  async getProducts(slug: string, page: number, sort: Sort, store?: string, city?: string): Promise<any> {
-    return this.categoryRepository.getProducts(slug, page, sort, store, city);
+  async getProducts(
+    slug: string,
+    page: number,
+    sort: Sort,
+    store?: string,
+    city?: string,
+  ): Promise<AggregationResults> {
+    const res = await this.categoryRepository.getProducts(slug, page, sort, store, city);
+    return res[0];
   }
 
   async create(category: CreateCategoryDto): Promise<Category> {

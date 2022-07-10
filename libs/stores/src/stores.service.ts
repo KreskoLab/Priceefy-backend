@@ -3,7 +3,7 @@ import { Store } from "./schemas/store.schema";
 import { LocalStore } from "./interfaces/store.interface";
 import { CreateStoreDto } from "./dto/create-store.dto";
 import { StoresRepository } from "./stores.repository";
-import { ProductsResponse, Sort } from "@app/products";
+import { AggregationResults, ProductsResponse, Sort } from "@app/products";
 import { UtilsService } from "@app/utils";
 import { City } from "./interfaces/store.interface";
 
@@ -30,8 +30,8 @@ export class StoresService {
     return stores[0].cities.map((city) => ({ name: city.name, slug: city.slug }));
   }
 
-  async getProducts(slug: string, page: number, sort: Sort, city?: string): Promise<any> {
-    const res = await this.storesRepository.getProducts(slug, page, sort, city);
+  async getProducts(slug: string, page: number, sort: Sort, city?: string): Promise<AggregationResults> {
+    const res = await this.storesRepository.aggregateProducts(slug, page, sort, city);
     return res[0];
   }
 

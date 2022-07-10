@@ -3,6 +3,7 @@ import { Product } from "./schemas/products.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { Sort } from "./types/sort";
+import { AggregationResults } from "./interfaces/aggregation-results.interface";
 
 @Injectable()
 export class ProductsRepository {
@@ -16,7 +17,7 @@ export class ProductsRepository {
     return this.model.find({ slug: { $in: slugs } }, { _id: 1, category: 1, slug: 1 });
   }
 
-  async findAll(page: number, sort: Sort, city?: string): Promise<Product[]> {
+  async findAll(page: number, sort: Sort, city?: string): Promise<AggregationResults[]> {
     const cityMatch = city ? city : { $exists: true };
 
     let sortCondition = {};

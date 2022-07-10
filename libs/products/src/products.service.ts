@@ -3,6 +3,7 @@ import { Product } from "./schemas/products.schema";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { ProductsRepository } from "./products.repository";
 import { Sort } from "./types/sort";
+import { AggregationResults } from "./interfaces/aggregation-results.interface";
 
 @Injectable()
 export class ProductsService {
@@ -33,7 +34,7 @@ export class ProductsService {
     return this.productsRepository.findBySlugs(slugs);
   }
 
-  async get(page: number, sort: Sort, city?: string): Promise<any> {
+  async get(page: number, sort: Sort, city?: string): Promise<AggregationResults> {
     const res = await this.productsRepository.findAll(page, sort, city);
     return res[0];
   }
