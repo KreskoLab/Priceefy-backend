@@ -1,4 +1,4 @@
-import { Sort } from "@app/products";
+import { AggregationResults, Sort } from "@app/products";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -17,7 +17,7 @@ export class StoresRepository {
     await this.model.bulkWrite(bulkDocs);
   }
 
-  async getProducts(slug: string, page: number, sort: Sort, city?: string): Promise<any> {
+  async aggregateProducts(slug: string, page: number, sort: Sort, city?: string): Promise<AggregationResults[]> {
     const cityMatch = city ? city : { $exists: true };
 
     let sortCondition = {};
@@ -53,6 +53,7 @@ export class StoresRepository {
             },
             {
               $match: {
+                "prices.store": slug,
                 "prices.city": cityMatch,
               },
             },
@@ -61,8 +62,20 @@ export class StoresRepository {
             },
             {
               $group: {
-                _id: { name: "$name", weight: "$weight", unit: "$unit" },
-                prices: { $addToSet: "$prices" },
+                _id: { name: "$name", store: "$prices.store", city: "$prices.city", weight: "$weight", unit: "$unit" },
+                prices: { $first: "$prices" },
+                slug: { $first: "$slug" },
+                image: { $first: "$image" },
+                country: { $first: "$country" },
+                trademark: { $first: "$trademark" },
+                unit: { $first: "$unit" },
+                weight: { $first: "$weight" },
+              },
+            },
+            {
+              $group: {
+                _id: { name: "$_id.name", weight: "$_id.weight", unit: "$_id.unit" },
+                prices: { $push: "$prices" },
                 slug: { $first: "$slug" },
                 image: { $first: "$image" },
                 country: { $first: "$country" },
@@ -91,6 +104,9 @@ export class StoresRepository {
       },
       {
         $unwind: "$products",
+      },
+      {
+        $replaceRoot: { newRoot: "$products" },
       },
       {
         $facet: {

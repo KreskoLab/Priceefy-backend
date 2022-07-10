@@ -3,7 +3,7 @@ import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
 import { CreateCategoryDto } from "./dto/create-category.dto";
-import { Sort } from "@app/products";
+import { AggregationResults, Sort } from "@app/products";
 
 @Injectable()
 export class CategoriesRepository {
@@ -17,7 +17,13 @@ export class CategoriesRepository {
     return this.model.findOne({ slug: slug });
   }
 
-  async getProducts(slug: string, page: number, sort: Sort, store?: string, city?: string): Promise<any> {
+  async getProducts(
+    slug: string,
+    page: number,
+    sort: Sort,
+    store?: string,
+    city?: string,
+  ): Promise<AggregationResults[]> {
     const storeMatch = store ? store : { $exists: true };
     const cityMatch = city ? city : { $exists: true };
 
