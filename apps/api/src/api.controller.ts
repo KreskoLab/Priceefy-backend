@@ -1,8 +1,9 @@
-import { CategoriesService } from "@app/categories";
+import { CategoriesService, Category } from "@app/categories";
+import { CreateCategoryDto } from "@app/categories/dto/create-category.dto";
 import { AggregationResults, ProductsService, Sort } from "@app/products";
 import { StoresService } from "@app/stores";
 import { City, LocalStore } from "@app/stores";
-import { Controller, Get, Param, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 
 @Controller()
 export class ApiController {
@@ -55,5 +56,10 @@ export class ApiController {
     @Query("city") city: string,
   ): Promise<AggregationResults> {
     return this.storesService.getProducts(slug, page, sort, city);
+  }
+
+  @Post("categories")
+  async createCategory(@Body() dto: CreateCategoryDto): Promise<Category> {
+    return this.categoriesService.create(dto);
   }
 }
