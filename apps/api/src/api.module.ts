@@ -7,6 +7,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ApiController } from "./api.controller";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+import { UsersModule } from "./users/users.module";
+import { AuthModule } from "./auth/auth.module";
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { join } from "path";
     StoresModule,
     CategoriesModule,
     ProductsModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [ApiController],
 })
