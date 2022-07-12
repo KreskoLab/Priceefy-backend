@@ -116,6 +116,8 @@ export class ScannerService {
         country: item.parameters?.find((item) => item.key === "country")?.value.trim() || "без тм",
         category: target.category,
         image: item.mainImage,
+        unit: unit,
+        weight: weight,
         price: {
           price: price,
           discount: !!item.priceStopAfter,
