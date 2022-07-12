@@ -3,7 +3,12 @@ import { CreateCategoryDto } from "@app/categories/dto/create-category.dto";
 import { AggregationResults, ProductsService, Sort } from "@app/products";
 import { StoresService } from "@app/stores";
 import { City, LocalStore } from "@app/stores";
-import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, Req, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { Request } from "express";
+import { AuthService } from "./auth/auth.service";
+import { CreateUserDto } from "./users/dto/create-user.dto";
+import { User } from "./users/schemas/user";
 
 @Controller()
 export class ApiController {
@@ -11,6 +16,7 @@ export class ApiController {
     private readonly storesService: StoresService,
     private readonly categoriesService: CategoriesService,
     private readonly productsService: ProductsService,
+    private readonly authService: AuthService,
   ) {}
 
   @Get("stores")
@@ -26,6 +32,24 @@ export class ApiController {
   @Get("cities")
   async getCities(): Promise<Pick<City, "name" | "slug">[]> {
     return this.storesService.getCities();
+  }
+
+  @UseGuards(AuthGuard("google"))
+  @Get("login")
+  async login() {}
+
+  @Get("me")
+  async getUserData(@Req() req: Request): Promise<User> {
+    if (req.headers["authorization"]) {
+      const accessToken = req.headers["authorization"].replace("Bearer", "");
+      return this.authService.validate(accessToken);
+    } else throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
+  }
+
+  @UseGuards(AuthGuard("google"))
+  @Get("auth/google/redirect")
+  async signInWithGoogleRedirect(@Req() req: Request) {
+    return this.authService.login(req.user as CreateUserDto);
   }
 
   @Get("products")
