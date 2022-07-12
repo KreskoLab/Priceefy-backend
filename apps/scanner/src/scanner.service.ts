@@ -31,6 +31,7 @@ export class ScannerService {
   ) {}
 
   async onModuleInit() {
+    await this.scannerQueue.empty();
     await this.load();
   }
 
@@ -109,11 +110,13 @@ export class ScannerService {
         target.categorySlug as `${CATEGORIES}`,
       );
 
+      const tm = item.parameters?.find((item) => item.key === "trademark")?.value.trim() || "без тм";
+
       const newProduct = {
-        name: this.utilsService.normalizeName(item.name, target.categorySlug as `${CATEGORIES}`),
+        name: this.utilsService.normalizeName(item.name, target.categorySlug as `${CATEGORIES}`, tm),
         slug: this.utilsService.slugify(item.name + "-" + weight + unit).toLowerCase(),
-        trademark: item.parameters?.find((item) => item.key === "trademark")?.value.trim() || "",
-        country: item.parameters?.find((item) => item.key === "country")?.value.trim() || "без тм",
+        trademark: tm,
+        country: item.parameters?.find((item) => item.key === "country")?.value.trim() || "",
         category: target.category,
         image: item.mainImage,
         unit: unit,
@@ -153,7 +156,11 @@ export class ScannerService {
     const products: CreateProductDto[] = [];
 
     for (const result of res.data.results) {
-      const productName: string = this.utilsService.normalizeName(result.title, target.categorySlug as `${CATEGORIES}`);
+      const productName: string = this.utilsService.normalizeName(
+        result.title,
+        target.categorySlug as `${CATEGORIES}`,
+        result.producer?.trademark,
+      );
 
       const { weight, unit } = this.utilsService.handleZakazWeight(
         result.unit,
