@@ -4,9 +4,22 @@ import { AggregationResults, Price, Product, ProductsService, Sort } from "@app/
 import { Period } from "@app/products/types/period";
 import { StoresService } from "@app/stores";
 import { City, LocalStore } from "@app/stores";
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, Req, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
-import { Request } from "express";
+import { Request, Response } from "express";
 import { AuthService } from "./auth/auth.service";
 import { CreateUserDto } from "./users/dto/create-user.dto";
 import { User } from "./users/schemas/user";
@@ -18,6 +31,7 @@ export class ApiController {
     private readonly categoriesService: CategoriesService,
     private readonly productsService: ProductsService,
     private readonly authService: AuthService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Get("stores")
@@ -41,16 +55,29 @@ export class ApiController {
 
   @Get("me")
   async getUserData(@Req() req: Request): Promise<User> {
-    if (req.headers["authorization"]) {
-      const accessToken = req.headers["authorization"].replace("Bearer", "");
-      return this.authService.validate(accessToken);
+    if (req.headers["cookie"]) {
+      const token = req.headers["cookie"]
+        .split(";")
+        .find((item) => item.includes("accessToken"))
+        .replace("accessToken=", "");
+
+      return this.authService.validate(token);
     } else throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
   }
 
   @UseGuards(AuthGuard("google"))
   @Get("auth/google/redirect")
-  async signInWithGoogleRedirect(@Req() req: Request) {
-    return this.authService.login(req.user as CreateUserDto);
+  async signInWithGoogleRedirect(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const token = await this.authService.login(req.user as CreateUserDto);
+
+    res.cookie("accessToken", token, {
+      domain: this.configService.get<string>("FRONTEND_DOMAIN"),
+      maxAge: this.configService.get<number>("COOKIE_LIFETIME"),
+      sameSite: "strict",
+      httpOnly: true,
+    });
+
+    return res.redirect(this.configService.get<string>("FRONTEND_URL"));
   }
 
   @Get("products")
