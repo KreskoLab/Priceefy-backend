@@ -126,7 +126,7 @@ export class ScannerService {
           discount: !!item.priceStopAfter,
           city: target.city,
           store: target.store,
-          created_at: DateTime.now().setZone("Europe/Kiev").endOf("day").toUTC().toString(),
+          created_at: DateTime.now().setZone("Europe/Kiev").endOf("day") as unknown as Date,
           in_stock: item.quantity > 0 ? true : false,
         },
       } as CreateProductDto;
@@ -192,7 +192,7 @@ export class ScannerService {
           city: target.city,
           price: !result.discount.status ? productPrice : discountPrice,
           discount: result.discount.status,
-          created_at: DateTime.now().setZone("Europe/Kiev").endOf("day").toUTC().toString(),
+          created_at: DateTime.now().setZone("Europe/Kiev").endOf("day") as unknown as Date,
           in_stock: result.in_stock,
         },
         country: result.country?.trim() || "",
