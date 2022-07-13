@@ -4,7 +4,6 @@ import { JwtService } from "@nestjs/jwt";
 import { CreateUserDto } from "../users/dto/create-user.dto";
 import { User } from "../users/schemas/user";
 import { UsersService } from "../users/users.service";
-import { LoginResponse } from "./interfaces/login-response.interface";
 
 @Injectable()
 export class AuthService {
@@ -24,24 +23,23 @@ export class AuthService {
     );
   }
 
-  public async login(data: CreateUserDto): Promise<LoginResponse> {
+  public async login(data: CreateUserDto): Promise<string> {
     const user = await this.usersService.getUserByGoogleId(data.googleId);
 
     if (!user) {
       const newUser = await this.usersService.addUser(data);
       const accessToken = await this.generateAccessToken(newUser._id);
 
-      return { user: newUser, token: accessToken };
+      return accessToken;
     } else {
-      return { user, token: await this.generateAccessToken(user._id) };
+      return this.generateAccessToken(user._id);
     }
   }
 
   public async validate(token: string): Promise<User> {
     try {
-      await this.jwtService.verifyAsync(token);
+      await this.jwtService.verifyAsync(token, { secret: this.configService.get<string>("JWT_SECRET") });
       const decoded = this.jwtService.decode(token);
-
       return this.usersService.getUserById(decoded["id"]);
     } catch (error) {
       throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
