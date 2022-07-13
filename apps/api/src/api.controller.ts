@@ -1,6 +1,7 @@
 import { CategoriesService, Category } from "@app/categories";
 import { CreateCategoryDto } from "@app/categories/dto/create-category.dto";
-import { AggregationResults, ProductsService, Sort } from "@app/products";
+import { AggregationResults, Price, Product, ProductsService, Sort } from "@app/products";
+import { Period } from "@app/products/types/period";
 import { StoresService } from "@app/stores";
 import { City, LocalStore } from "@app/stores";
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, Req, UseGuards } from "@nestjs/common";
@@ -58,7 +59,21 @@ export class ApiController {
     @Query("sort") sort: Sort = "discount",
     @Query("city") city: string,
   ): Promise<AggregationResults> {
-    return this.productsService.get(page, sort, city);
+    return this.productsService.getAll(page, sort, city);
+  }
+
+  @Get("products/:slug")
+  async getProduct(@Param("slug") slug: string, @Query("city") city: string): Promise<Product> {
+    return this.productsService.getBySlug(slug, city);
+  }
+
+  @Get("products/:slug/prices")
+  async getProductPrices(
+    @Param("slug") slug: string,
+    @Query("city") city: string,
+    @Query("period") period: Period = "week",
+  ): Promise<Pick<Price, "price" | "store" | "created_at">[]> {
+    return this.productsService.getPrices(slug, city, period);
   }
 
   @Get("categories/:slug")
