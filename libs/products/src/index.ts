@@ -5,4 +5,5 @@ export * from "./interfaces/products-response.interface";
 export * from "./dto/create-product.dto";
 export * from "./schemas/products.schema";
 export * from "./types/sort";
+export * from "./types/period";
 export * from "./interfaces/aggregation-results.interface";
