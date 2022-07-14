@@ -105,8 +105,20 @@ export class ProductsRepository {
       },
       {
         $group: {
-          _id: { name: "$name", weight: "$weight", unit: "$unit" },
+          _id: { name: "$name", store: "$prices.store", city: "$prices.city" },
           prices: { $first: "$prices" },
+          slug: { $first: "$slug" },
+          image: { $first: "$image" },
+          country: { $first: "$country" },
+          trademark: { $first: "$trademark" },
+          unit: { $first: "$unit" },
+          weight: { $first: "$weight" },
+        },
+      },
+      {
+        $group: {
+          _id: { name: "$_id.name" },
+          prices: { $push: "$prices" },
           slug: { $first: "$slug" },
           image: { $first: "$image" },
           country: { $first: "$country" },
@@ -157,8 +169,20 @@ export class ProductsRepository {
       },
       {
         $group: {
-          _id: { name: "$name", weight: "$weight", unit: "$unit" },
+          _id: { name: "$name", store: "$prices.store", city: "$prices.city", weight: "$weight", unit: "$unit" },
           prices: { $first: "$prices" },
+          slug: { $first: "$slug" },
+          image: { $first: "$image" },
+          country: { $first: "$country" },
+          trademark: { $first: "$trademark" },
+          unit: { $first: "$unit" },
+          weight: { $first: "$weight" },
+        },
+      },
+      {
+        $group: {
+          _id: { name: "$_id.name", weight: "$_id.weight", unit: "$_id.unit" },
+          prices: { $push: "$prices" },
           slug: { $first: "$slug" },
           image: { $first: "$image" },
           country: { $first: "$country" },
