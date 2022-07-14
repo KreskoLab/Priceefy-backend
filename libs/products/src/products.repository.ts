@@ -106,7 +106,7 @@ export class ProductsRepository {
       {
         $group: {
           _id: { name: "$name", weight: "$weight", unit: "$unit" },
-          prices: { $addToSet: "$prices" },
+          prices: { $first: "$prices" },
           slug: { $first: "$slug" },
           image: { $first: "$image" },
           country: { $first: "$country" },
@@ -158,7 +158,7 @@ export class ProductsRepository {
       {
         $group: {
           _id: { name: "$name", weight: "$weight", unit: "$unit" },
-          prices: { $addToSet: "$prices" },
+          prices: { $first: "$prices" },
           slug: { $first: "$slug" },
           image: { $first: "$image" },
           country: { $first: "$country" },
