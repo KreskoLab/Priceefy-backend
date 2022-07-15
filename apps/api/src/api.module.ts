@@ -27,6 +27,11 @@ import { AuthModule } from "./auth/auth.module";
     ServeStaticModule.forRoot({
       rootPath: join("./dist/", "icons"),
       serveRoot: "/icons/",
+      serveStaticOptions: {
+        cacheControl: true,
+        lastModified: true,
+        maxAge: "30d",
+      },
     }),
     StoresModule,
     CategoriesModule,
