@@ -157,6 +157,7 @@ export class ProductsRepository {
       {
         $group: {
           _id: { name: "$name", store: "$prices.store", city: "$prices.city" },
+          id: { $first: "$_id" },
           prices: { $first: "$prices" },
           slug: { $first: "$slug" },
           image: { $first: "$image" },
@@ -169,6 +170,7 @@ export class ProductsRepository {
       {
         $group: {
           _id: { name: "$_id.name" },
+          id: { $first: "$id" },
           prices: { $push: "$prices" },
           slug: { $first: "$slug" },
           image: { $first: "$image" },
@@ -181,7 +183,8 @@ export class ProductsRepository {
       {
         $set: {
           name: "$_id.name",
-          _id: "$$REMOVE",
+          _id: "$id",
+          id: "$$REMOVE",
         },
       },
     ]);
