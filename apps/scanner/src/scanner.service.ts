@@ -112,10 +112,11 @@ export class ScannerService {
 
       const tm = item.parameters?.find((item) => item.key === "trademark")?.value.trim() || "без тм";
       const productName = this.utilsService.normalizeName(item.name, target.categorySlug as `${CATEGORIES}`, tm);
+      const productSlug = this.utilsService.slugify(productName.toLowerCase() + "-" + weight + unit);
 
       const newProduct = {
         name: productName,
-        slug: this.utilsService.slugify(productName).toLowerCase(),
+        slug: productSlug,
         trademark: tm,
         country: item.parameters?.find((item) => item.key === "country")?.value.trim() || "",
         category: target.category,
