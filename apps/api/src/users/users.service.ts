@@ -18,4 +18,14 @@ export class UsersService {
   async getUserById(id: string): Promise<User> {
     return this.usersRepository.findById(id);
   }
+
+  async handleFavorite(userId: string, productId: string): Promise<User["favorites"]> {
+    const res = await this.usersRepository.updateById(userId, productId);
+    return res.favorites;
+  }
+
+  async getFavorites(userId: string): Promise<User["favorites"]> {
+    const res = await this.usersRepository.findById(userId);
+    return res.favorites;
+  }
 }
