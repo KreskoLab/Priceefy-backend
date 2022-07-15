@@ -19,6 +19,57 @@ export class ProductsRepository {
     return this.model.find({ slug: { $in: slugs } }, { _id: 1, category: 1, slug: 1 });
   }
 
+  async aggregateByIds(ids: string[], city: string): Promise<Product[]> {
+    return this.model.aggregate([
+      {
+        $match: {
+          _id: { $in: ids },
+        },
+      },
+      {
+        $unwind: "$prices",
+      },
+      {
+        $match: {
+          "prices.city": city,
+        },
+      },
+      {
+        $sort: { "prices.created_at": -1 },
+      },
+      {
+        $group: {
+          _id: { name: "$name", store: "$prices.store", city: "$prices.city" },
+          prices: { $first: "$prices" },
+          slug: { $first: "$slug" },
+          image: { $first: "$image" },
+          country: { $first: "$country" },
+          trademark: { $first: "$trademark" },
+          unit: { $first: "$unit" },
+          weight: { $first: "$weight" },
+        },
+      },
+      {
+        $group: {
+          _id: { name: "$_id.name" },
+          prices: { $push: "$prices" },
+          slug: { $first: "$slug" },
+          image: { $first: "$image" },
+          country: { $first: "$country" },
+          trademark: { $first: "$trademark" },
+          unit: { $first: "$unit" },
+          weight: { $first: "$weight" },
+        },
+      },
+      {
+        $set: {
+          name: "$_id.name",
+          _id: "$$REMOVE",
+        },
+      },
+    ]);
+  }
+
   async aggregatePrices(
     slug: string,
     city: string,
