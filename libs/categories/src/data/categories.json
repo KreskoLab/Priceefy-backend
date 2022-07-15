@@ -192,7 +192,7 @@
   {
     "name": "Зефір",
     "slug": "marshmallow",
-    "icon": "icons/chocolate.svg",
+    "icon": "icons/marshmallow.svg",
     "stores": [
       {
         "slug": "novus",
@@ -272,7 +272,7 @@
   {
     "name": "М'ясо",
     "slug": "meat",
-    "icon": "icons/chocolate.svg",
+    "icon": "icons/meat.svg",
     "stores": [
       {
         "slug": "novus",

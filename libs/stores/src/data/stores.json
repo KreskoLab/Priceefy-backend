@@ -2,7 +2,7 @@
   {
     "name": "Ашан",
     "slug": "auchan",
-    "icon": "icons/auchan.webp",
+    "icon": "icons/auchan.svg",
     "cities": [
       {
         "name": "Київ",
