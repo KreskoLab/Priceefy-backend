@@ -19,4 +19,30 @@ export class UsersRepository {
   async findById(id: string): Promise<User> {
     return this.model.findById(id);
   }
+
+  async updateById(id: string, value: string): Promise<User> {
+    return this.model.findByIdAndUpdate(
+      id,
+      [
+        {
+          $set: {
+            favorites: {
+              $cond: [
+                {
+                  $in: [value, "$favorites"],
+                },
+                {
+                  $setDifference: ["$favorites", [value]],
+                },
+                {
+                  $concatArrays: ["$favorites", [value]],
+                },
+              ],
+            },
+          },
+        },
+      ],
+      { new: true },
+    );
+  }
 }
