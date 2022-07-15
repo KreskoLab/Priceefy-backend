@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Query,
   Req,
   Res,
@@ -23,6 +24,7 @@ import { Request, Response } from "express";
 import { AuthService } from "./auth/auth.service";
 import { CreateUserDto } from "./users/dto/create-user.dto";
 import { User } from "./users/schemas/user";
+import { UsersService } from "./users/users.service";
 
 @Controller()
 export class ApiController {
@@ -32,6 +34,7 @@ export class ApiController {
     private readonly productsService: ProductsService,
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Get("stores")
@@ -127,5 +130,16 @@ export class ApiController {
   @Post("categories")
   async createCategory(@Body() dto: CreateCategoryDto): Promise<Category> {
     return this.categoriesService.create(dto);
+  }
+
+  @Put("users/:id/favorites")
+  async updateFavorites(@Body() body: { product: string }, @Param("id") id: string): Promise<User["favorites"]> {
+    return this.usersService.handleFavorite(id, body.product);
+  }
+
+  @Get("users/:id/favorites")
+  async favorites(@Param("id") id: string, @Query("city") city: string): Promise<Product[]> {
+    const ids = await this.usersService.getFavorites(id);
+    return this.productsService.getByIds(ids, city);
   }
 }
