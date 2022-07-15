@@ -3,7 +3,7 @@ export interface Price {
   city: string;
   store: string;
   discount: boolean;
-  discount_end?: string;
+  discount_end?: Date;
   created_at: Date;
   in_stock: boolean;
 }
