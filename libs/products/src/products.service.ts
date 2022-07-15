@@ -49,6 +49,10 @@ export class ProductsService {
     else throw new HttpException("Product not found", HttpStatus.NOT_FOUND);
   }
 
+  async getByIds(ids: string[], city: string): Promise<Product[]> {
+    return this.productsRepository.aggregateByIds(ids, city);
+  }
+
   async getPrices(
     slug: string,
     city: string,
