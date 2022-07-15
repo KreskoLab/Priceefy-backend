@@ -18,7 +18,7 @@ export class User {
   avatar: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }] })
-  favorites: Product[];
+  favorites: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
