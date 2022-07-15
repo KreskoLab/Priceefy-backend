@@ -173,7 +173,7 @@ export class ScannerService {
         result.title,
       );
 
-      const productSlug: string = this.utilsService.slugify(productName.toLowerCase() + "-" + weight + unit);
+      const productSlug = this.utilsService.slugify(productName.toLowerCase() + "-" + weight + unit);
 
       const productPrice = Number(
         result.price.toString().substring(0, result.price.toString().length - 2) +
