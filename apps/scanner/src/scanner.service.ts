@@ -111,10 +111,11 @@ export class ScannerService {
       );
 
       const tm = item.parameters?.find((item) => item.key === "trademark")?.value.trim() || "без тм";
+      const productName = this.utilsService.normalizeName(item.name, target.categorySlug as `${CATEGORIES}`, tm);
 
       const newProduct = {
-        name: this.utilsService.normalizeName(item.name, target.categorySlug as `${CATEGORIES}`, tm),
-        slug: this.utilsService.slugify(item.name + "-" + weight + unit).toLowerCase(),
+        name: productName,
+        slug: this.utilsService.slugify(productName).toLowerCase(),
         trademark: tm,
         country: item.parameters?.find((item) => item.key === "country")?.value.trim() || "",
         category: target.category,
@@ -126,14 +127,14 @@ export class ScannerService {
           discount: !!item.priceStopAfter,
           city: target.city,
           store: target.store,
-          created_at: DateTime.now().setZone("Europe/Kiev").endOf("day") as unknown as Date,
+          created_at: DateTime.now().setZone("Europe/Kiev") as unknown as Date,
           in_stock: item.quantity > 0 ? true : false,
         },
       } as CreateProductDto;
 
       if (!!item.priceStopAfter) {
         const date = this.utilsService.handleDiscountDate(item.priceStopAfter, target.store);
-        newProduct.price.discount_end = DateTime.fromISO(date, { zone: "Europe/Kiev" }).toUTC().toString();
+        newProduct.price.discount_end = DateTime.fromISO(date, { zone: "Europe/Kiev" }) as unknown as Date;
       }
 
       products.push(newProduct);
@@ -185,14 +186,14 @@ export class ScannerService {
       const newProduct: CreateProductDto = {
         name: productName,
         slug: productSlug,
-        image: result.img.s350x350,
+        image: result.img.s1350x1350,
         category: target.category,
         price: {
           store: target.store,
           city: target.city,
           price: !result.discount.status ? productPrice : discountPrice,
           discount: result.discount.status,
-          created_at: DateTime.now().setZone("Europe/Kiev").endOf("day") as unknown as Date,
+          created_at: DateTime.now().setZone("Europe/Kiev") as unknown as Date,
           in_stock: result.in_stock,
         },
         country: result.country?.trim() || "",
@@ -202,7 +203,8 @@ export class ScannerService {
       };
 
       if (newProduct.price.discount) {
-        newProduct.price.discount_end = this.utilsService.handleDiscountDate(result.discount.due_date, "zakaz");
+        const date = this.utilsService.handleDiscountDate(result.discount.due_date, "zakaz");
+        newProduct.price.discount_end = DateTime.fromISO(date, { zone: "Europe/Kiev" }) as unknown as Date;
       }
 
       products.push(newProduct);
