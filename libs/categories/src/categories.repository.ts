@@ -17,6 +17,18 @@ export class CategoriesRepository {
     return this.model.findOne({ slug: slug });
   }
 
+  async getAllCategories(): Promise<Array<Category>> {
+    return this.model.find({ products: { $exists: true, $not: { $size: 0 } } });
+  }
+
+  async getAllIdsAndSlugs(): Promise<Array<Category>> {
+    return this.model.find({}, { _id: 1, slug: 1 });
+  }
+
+  async updateCategoryProducts(bulkDocs: Array<any>): Promise<void> {
+    await this.model.bulkWrite(bulkDocs);
+  }
+
   async getProducts(
     slug: string,
     page: number,
@@ -69,7 +81,8 @@ export class CategoriesRepository {
             },
             {
               $group: {
-                _id: { name: "$name", store: "$prices.store", city: "$prices.city", weight: "$weight", unit: "$unit" },
+                _id: { slug: "$slug", store: "$prices.store", city: "$prices.city" },
+                name: { $first: "$name" },
                 prices: { $first: "$prices" },
                 slug: { $first: "$slug" },
                 image: { $first: "$image" },
@@ -81,7 +94,8 @@ export class CategoriesRepository {
             },
             {
               $group: {
-                _id: { name: "$_id.name", weight: "$_id.weight", unit: "$_id.unit" },
+                _id: { slug: "$_id.slug" },
+                name: { $first: "$name" },
                 prices: { $push: "$prices" },
                 slug: { $first: "$slug" },
                 image: { $first: "$image" },
@@ -93,7 +107,6 @@ export class CategoriesRepository {
             },
             {
               $set: {
-                name: "$_id.name",
                 _id: "$$REMOVE",
               },
             },
@@ -129,17 +142,5 @@ export class CategoriesRepository {
         },
       },
     ]);
-  }
-
-  async getAllCategories(): Promise<Array<Category>> {
-    return this.model.find({ products: { $exists: true, $not: { $size: 0 } } });
-  }
-
-  async getAllIdsAndSlugs(): Promise<Array<Category>> {
-    return this.model.find({}, { _id: 1, slug: 1 });
-  }
-
-  async updateCategoryProducts(bulkDocs: Array<any>): Promise<void> {
-    await this.model.bulkWrite(bulkDocs);
   }
 }
