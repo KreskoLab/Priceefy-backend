@@ -22,6 +22,7 @@ import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
 import { AuthService } from "./auth/auth.service";
+import { UserGuard } from "./auth/guards/user.guards";
 import { CreateUserDto } from "./users/dto/create-user.dto";
 import { User } from "./users/schemas/user";
 import { UsersService } from "./users/users.service";
@@ -62,7 +63,8 @@ export class ApiController {
       const token = req.headers["cookie"]
         .split(";")
         .find((item) => item.includes("accessToken"))
-        .replace("accessToken=", "");
+        .replace("accessToken=", "")
+        .trim();
 
       const valid = await this.authService.validate(token);
 
@@ -139,11 +141,13 @@ export class ApiController {
     return this.categoriesService.create(dto);
   }
 
+  @UseGuards(UserGuard)
   @Put("users/:id/favorites")
   async updateFavorites(@Body() body: { product: string }, @Param("id") id: string): Promise<User["favorites"]> {
     return this.usersService.handleFavorite(id, body.product);
   }
 
+  @UseGuards(UserGuard)
   @Get("users/:id/favorites")
   async favorites(@Param("id") id: string, @Query("city") city: string): Promise<Product[]> {
     const ids = await this.usersService.getFavorites(id);
