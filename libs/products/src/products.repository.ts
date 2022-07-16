@@ -39,7 +39,8 @@ export class ProductsRepository {
       },
       {
         $group: {
-          _id: { name: "$name", store: "$prices.store", city: "$prices.city" },
+          _id: { slug: "$slug", store: "$prices.store", city: "$prices.city" },
+          name: { $first: "$name" },
           prices: { $first: "$prices" },
           slug: { $first: "$slug" },
           image: { $first: "$image" },
@@ -51,7 +52,8 @@ export class ProductsRepository {
       },
       {
         $group: {
-          _id: { name: "$_id.name" },
+          _id: { slug: "$_id.slug" },
+          name: { $first: "$name" },
           prices: { $push: "$prices" },
           slug: { $first: "$slug" },
           image: { $first: "$image" },
@@ -63,7 +65,6 @@ export class ProductsRepository {
       },
       {
         $set: {
-          name: "$_id.name",
           _id: "$$REMOVE",
         },
       },
@@ -275,6 +276,42 @@ export class ProductsRepository {
       {
         $addFields: {
           count: { $arrayElemAt: ["$count.count", 0] },
+        },
+      },
+    ]);
+  }
+
+  async searchAggregation(query: string): Promise<any> {
+    return this.model.aggregate([
+      {
+        $match: {
+          $text: {
+            $search: query,
+          },
+        },
+      },
+      {
+        $project: {
+          slug: 1,
+          score: { $meta: "textScore" },
+        },
+      },
+      {
+        $match: {
+          score: {
+            $gt: 0.7,
+          },
+        },
+      },
+      {
+        $sort: {
+          score: -1,
+        },
+      },
+      {
+        $group: {
+          _id: 1,
+          ids: { $push: "$_id" },
         },
       },
     ]);
