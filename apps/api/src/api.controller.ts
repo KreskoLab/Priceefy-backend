@@ -64,7 +64,14 @@ export class ApiController {
         .find((item) => item.includes("accessToken"))
         .replace("accessToken=", "");
 
-      return this.authService.validate(token);
+      const valid = await this.authService.validate(token);
+
+      if (valid) {
+        const userId = this.authService.decode(token);
+        return this.usersService.getUserById(userId);
+      } else {
+        throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
+      }
     } else throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
   }
 
