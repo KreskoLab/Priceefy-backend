@@ -13,7 +13,7 @@ export class UserGuard implements CanActivate {
       const token = request.headers["cookie"]
         .split(";")
         .find((item) => item.includes("accessToken"))
-        .replace("accessToken=", "")
+        ?.replace("accessToken=", "")
         .trim();
 
       const valid = await this.authService.validate(token);
