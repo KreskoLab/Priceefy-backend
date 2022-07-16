@@ -1,8 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { CreateUserDto } from "../users/dto/create-user.dto";
-import { User } from "../users/schemas/user";
 import { UsersService } from "../users/users.service";
 
 @Injectable()
@@ -36,13 +35,17 @@ export class AuthService {
     }
   }
 
-  public async validate(token: string): Promise<User> {
+  public async validate(token: string): Promise<boolean> {
     try {
       await this.jwtService.verifyAsync(token, { secret: this.configService.get<string>("JWT_SECRET") });
-      const decoded = this.jwtService.decode(token);
-      return this.usersService.getUserById(decoded["id"]);
+      return true;
     } catch (error) {
-      throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
+      return false;
     }
+  }
+
+  public decode(token: string): string {
+    const decoded = this.jwtService.decode(token);
+    return decoded["id"];
   }
 }
