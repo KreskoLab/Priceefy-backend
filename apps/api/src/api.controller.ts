@@ -22,7 +22,7 @@ import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
 import { AuthService } from "./auth/auth.service";
-import { UserGuard } from "./auth/guards/user.guards";
+import { UserGuard } from "./auth/guards/user.guard";
 import { AdminGuard } from "./auth/guards/admin.guard";
 import { CreateUserDto } from "./users/dto/create-user.dto";
 import { User } from "./users/schemas/user";
