@@ -102,6 +102,11 @@ export class ApiController {
     return this.productsService.getAll(page, sort, city);
   }
 
+  @Get("products/search")
+  async searchProducts(@Query("q") query: string, @Query("city") city: string): Promise<any> {
+    return this.productsService.search(query, city);
+  }
+
   @Get("products/:slug")
   async getProduct(@Param("slug") slug: string, @Query("city") city: string): Promise<Product> {
     return this.productsService.getBySlug(slug, city);
