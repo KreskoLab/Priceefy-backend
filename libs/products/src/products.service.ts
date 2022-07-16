@@ -65,4 +65,12 @@ export class ProductsService {
 
     return res.map((item) => ({ ...item, store: stores.find((store) => store.slug === item.store).name }));
   }
+
+  async search(query: string, city: string): Promise<any> {
+    const results = await this.productsRepository.searchAggregation(query);
+
+    if (results.length) {
+      return this.getByIds(results[0].ids, city);
+    } else return [];
+  }
 }
