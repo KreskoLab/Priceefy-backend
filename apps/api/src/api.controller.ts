@@ -23,6 +23,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
 import { AuthService } from "./auth/auth.service";
 import { UserGuard } from "./auth/guards/user.guards";
+import { AdminGuard } from "./auth/guards/admin.guard";
 import { CreateUserDto } from "./users/dto/create-user.dto";
 import { User } from "./users/schemas/user";
 import { UsersService } from "./users/users.service";
@@ -136,6 +137,7 @@ export class ApiController {
     return this.storesService.getProducts(slug, page, sort, city);
   }
 
+  @UseGuards(AdminGuard)
   @Post("categories")
   async createCategory(@Body() dto: CreateCategoryDto): Promise<Category> {
     return this.categoriesService.create(dto);
