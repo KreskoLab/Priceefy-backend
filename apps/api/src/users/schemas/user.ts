@@ -1,4 +1,3 @@
-import { Product } from "@app/products";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { Document } from "mongoose";
 
@@ -16,6 +15,9 @@ export class User {
 
   @Prop({ required: true })
   avatar: string;
+
+  @Prop({ default: false })
+  admin: boolean;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }] })
   favorites: string[];
