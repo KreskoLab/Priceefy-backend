@@ -61,8 +61,8 @@ export class ProductsService {
     const stores = await this.utilsService
       .readData<LocalStore[]>("stores.json")
       .then((res) => res.map((store) => ({ name: store.name, slug: store.slug })));
-    const res = await this.productsRepository.aggregatePrices(slug, city, period);
 
+    const res = await this.productsRepository.aggregatePrices(slug, city, period);
     return res.map((item) => ({ ...item, store: stores.find((store) => store.slug === item.store).name }));
   }
 
