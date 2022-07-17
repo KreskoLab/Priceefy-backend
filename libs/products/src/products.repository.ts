@@ -281,7 +281,7 @@ export class ProductsRepository {
     ]);
   }
 
-  async searchAggregation(query: string): Promise<any> {
+  async searchAggregation(query: string): Promise<{ ids: string[] }[]> {
     return this.model.aggregate([
       {
         $match: {
