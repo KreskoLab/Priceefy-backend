@@ -5,7 +5,7 @@ import { getModelToken } from "@nestjs/mongoose";
 import { Test } from "@nestjs/testing";
 import { storeStub } from "./stubs/store.stub";
 import { bulkDocStub } from "./stubs/bulk-doc.stub";
-import { MockStoreModel } from "./__mocks__/stores.repository.mock";
+import { MockStoreModel } from "./__mocks__/store.model.mock";
 import { AggregationResults } from "@app/products";
 import { aggregationStub } from "./stubs/aggregation.stub";
 
