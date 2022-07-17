@@ -2,11 +2,13 @@ import { priceStub } from "./price.stub";
 import { productStub } from "./product.stub";
 
 export const bulkDocStub = () => {
+  const { _id, ...rest } = productStub();
+
   return {
     updateOne: {
-      filter: { slug: productStub().slug },
+      filter: { slug: rest.slug },
       update: {
-        $setOnInsert: productStub(),
+        $setOnInsert: rest,
         $addToSet: { prices: priceStub() },
       },
       upsert: true,
