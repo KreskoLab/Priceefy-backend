@@ -112,7 +112,7 @@ export class ScannerService {
 
       const tm = item.parameters?.find((item) => item.key === "trademark")?.value.trim() || "без тм";
       const productName = this.utilsService.normalizeName(item.name, target.categorySlug as `${CATEGORIES}`, tm);
-      const productSlug = this.utilsService.slugify(productName.toLowerCase() + "-" + weight + unit);
+      const productSlug = this.utilsService.slugify(productName + "-" + weight + unit);
 
       const newProduct = {
         name: productName,
@@ -174,7 +174,7 @@ export class ScannerService {
         result.title,
       );
 
-      const productSlug = this.utilsService.slugify(productName.toLowerCase() + "-" + weight + unit);
+      const productSlug = this.utilsService.slugify(productName + "-" + weight + unit);
 
       const productPrice = Number(
         result.price.toString().substring(0, result.price.toString().length - 2) +

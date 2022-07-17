@@ -6,7 +6,7 @@ import Slugify from "slugify";
 
 @Injectable()
 export class UtilsService {
-  async readData<T>(filename: string): Promise<T> {
+  public async readData<T>(filename: string): Promise<T> {
     const path = resolve("./dist/", "data", filename);
 
     const rawData = await fs.readFile(path, {
@@ -17,7 +17,7 @@ export class UtilsService {
   }
 
   public slugify(slug: string): string {
-    return Slugify(slug);
+    return Slugify(slug).toLowerCase();
   }
 
   public normalizeName(name: string, category: `${CATEGORIES}`, trademark: string): string {
