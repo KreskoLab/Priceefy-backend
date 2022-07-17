@@ -1,4 +1,4 @@
-import { Price, Product } from "@app/products";
+import { AggregationResults, Price, Product } from "@app/products";
 import { ProductsRepository } from "@app/products/products.repository";
 import { getModelToken } from "@nestjs/mongoose";
 import { Test } from "@nestjs/testing";
@@ -88,6 +88,7 @@ describe("ProductsRepositoryr", () => {
 
   describe("aggregatePrices", () => {
     let products: Pick<Price, "price" | "store" | "created_at">[];
+
     const aggregationResults = {
       price: priceStub().price,
       store: priceStub().store,
@@ -108,6 +109,77 @@ describe("ProductsRepositoryr", () => {
 
       it("should return aggregated products by ids", () => {
         expect(products).toStrictEqual([aggregationResults]);
+      });
+    });
+  });
+
+  describe("findBySlug", () => {
+    let products: Product[];
+
+    describe("when findBySlug is called", () => {
+      beforeEach(async () => {
+        productModel.aggregationResults = [productStub()];
+
+        jest.spyOn(productModel, "aggregate");
+        products = await productsRepository.findBySlug("coca-cola-2000ml", "kyiv");
+      });
+
+      it("should call the productModel", async () => {
+        expect(productModel.aggregate).toHaveBeenCalledTimes(1);
+      });
+
+      it("should return aggregated products by ids", () => {
+        expect(products).toStrictEqual([productStub()]);
+      });
+    });
+  });
+
+  describe("findAll", () => {
+    let results: AggregationResults[];
+    const { _id, ...rest } = productStub();
+
+    const aggregation = [
+      {
+        results: [rest],
+        count: 30,
+      },
+    ];
+
+    describe("when findAll is called", () => {
+      beforeEach(async () => {
+        productModel.aggregationResults = aggregation;
+
+        jest.spyOn(productModel, "aggregate");
+        results = await productsRepository.findAll(1, "asc", "kyiv");
+      });
+
+      it("should call the productModel", async () => {
+        expect(productModel.aggregate).toHaveBeenCalledTimes(1);
+      });
+
+      it("should return aggregated products by ids", () => {
+        expect(results).toStrictEqual(aggregation);
+      });
+    });
+  });
+
+  describe("searchAggregation", () => {
+    let results: { ids: string[] }[];
+
+    describe("when searchAggregation is called", () => {
+      beforeEach(async () => {
+        productModel.aggregationResults = ["coca-cola-500ml", "coca-cola-2000ml"];
+
+        jest.spyOn(productModel, "aggregate");
+        results = await productsRepository.searchAggregation("coca cola");
+      });
+
+      it("should call the productModel", async () => {
+        expect(productModel.aggregate).toHaveBeenCalledTimes(1);
+      });
+
+      it("should return aggregated products by ids", () => {
+        expect(results).toStrictEqual(["coca-cola-500ml", "coca-cola-2000ml"]);
       });
     });
   });
