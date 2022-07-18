@@ -16,9 +16,10 @@ import { ProductsResponse } from "@app/products";
 import { DateTime } from "luxon";
 import { CATEGORIES } from "@app/categories";
 import { ScannerStore } from "./interfaces/scanner-store.interface";
+import { config } from "dotenv";
+import { Cron, CronExpression } from "@nestjs/schedule";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require("dotenv").config();
+config();
 
 @Injectable()
 export class ScannerService {
@@ -32,9 +33,9 @@ export class ScannerService {
 
   async onModuleInit() {
     await this.scannerQueue.empty();
-    await this.load();
   }
 
+  @Cron(CronExpression[process.env.CRON_TIME])
   async load(): Promise<void> {
     const stores = await this.utilsService.readData<ScannerStore[]>("stores.json");
     const categories = await this.utilsService.readData<ScannerCategory[]>("categories.json");

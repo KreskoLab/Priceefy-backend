@@ -9,6 +9,7 @@ import { ScannerConsumer } from "./scanner.consumer";
 import { StoresModule } from "@app/stores";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { MongooseModule } from "@nestjs/mongoose";
         removeOnFail: true,
       },
     }),
+    ScheduleModule.forRoot(),
     StoresModule,
     CategoriesModule,
     ProductsModule,
