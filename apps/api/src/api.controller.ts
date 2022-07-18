@@ -1,4 +1,4 @@
-import { CategoriesService, Category } from "@app/categories";
+import { CategoriesService, Category, LocalCategory } from "@app/categories";
 import { CreateCategoryDto } from "@app/categories/dto/create-category.dto";
 import { AggregationResults, Price, Product, ProductsService, Sort } from "@app/products";
 import { Period } from "@app/products/types/period";
@@ -45,7 +45,7 @@ export class ApiController {
   }
 
   @Get("categories")
-  async getCategories(): Promise<Partial<LocalStore>[]> {
+  async getCategories(): Promise<Partial<LocalCategory>[]> {
     return this.categoriesService.getCategories();
   }
 
@@ -72,9 +72,7 @@ export class ApiController {
       if (valid) {
         const userId = this.authService.decode(token);
         return this.usersService.getUserById(userId);
-      } else {
-        throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
-      }
+      } else throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
     } else throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
   }
 
@@ -103,7 +101,7 @@ export class ApiController {
   }
 
   @Get("products/search")
-  async searchProducts(@Query("q") query: string, @Query("city") city: string): Promise<any> {
+  async searchProducts(@Query("q") query: string, @Query("city") city: string): Promise<Product[]> {
     return this.productsService.search(query, city);
   }
 
