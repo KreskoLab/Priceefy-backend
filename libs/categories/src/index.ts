@@ -3,3 +3,4 @@ export * from "./categories.service";
 export * from "./enums/category";
 export * from "./schemas/category.schema";
 export * from "./interfaces/category.interface";
+export * from "../tests/stubs/category.stub";

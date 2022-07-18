@@ -7,3 +7,5 @@ export * from "./schemas/products.schema";
 export * from "./types/sort";
 export * from "./types/period";
 export * from "./interfaces/aggregation-results.interface";
+export * from "../tests/stubs/product.stub";
+export * from "../tests/stubs/price.stub";

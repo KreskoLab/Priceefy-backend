@@ -17,6 +17,7 @@ export class StoresService {
 
   async getStores(): Promise<Partial<LocalStore>[]> {
     const res = await this.utilsService.readData<LocalStore[]>("stores.json");
+
     return res.map(({ cities, ...rest }) => {
       return {
         ...rest,
