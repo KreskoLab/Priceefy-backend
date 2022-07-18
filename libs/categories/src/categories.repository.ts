@@ -17,15 +17,15 @@ export class CategoriesRepository {
     return this.model.findOne({ slug: slug });
   }
 
-  async getAllCategories(): Promise<Array<Category>> {
+  async getAllCategories(): Promise<Category[]> {
     return this.model.find({ products: { $exists: true, $not: { $size: 0 } } });
   }
 
-  async getAllIdsAndSlugs(): Promise<Array<Category>> {
+  async getAllIdsAndSlugs(): Promise<Category[]> {
     return this.model.find({}, { _id: 1, slug: 1 });
   }
 
-  async updateCategoryProducts(bulkDocs: Array<any>): Promise<void> {
+  async updateCategoryProducts(bulkDocs: object[]): Promise<void> {
     await this.model.bulkWrite(bulkDocs);
   }
 
