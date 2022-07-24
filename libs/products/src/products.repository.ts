@@ -20,55 +20,58 @@ export class ProductsRepository {
   }
 
   async aggregateByIds(ids: string[], city: string): Promise<Product[]> {
-    return this.model.aggregate([
-      {
-        $match: {
-          _id: { $in: ids },
+    return this.model.aggregate(
+      [
+        {
+          $match: {
+            _id: { $in: ids },
+          },
         },
-      },
-      {
-        $unwind: "$prices",
-      },
-      {
-        $match: {
-          "prices.city": city,
+        {
+          $unwind: "$prices",
         },
-      },
-      {
-        $sort: { "prices.created_at": -1 },
-      },
-      {
-        $group: {
-          _id: { slug: "$slug", store: "$prices.store", city: "$prices.city" },
-          name: { $first: "$name" },
-          prices: { $first: "$prices" },
-          slug: { $first: "$slug" },
-          image: { $first: "$image" },
-          country: { $first: "$country" },
-          trademark: { $first: "$trademark" },
-          unit: { $first: "$unit" },
-          weight: { $first: "$weight" },
+        {
+          $match: {
+            "prices.city": city,
+          },
         },
-      },
-      {
-        $group: {
-          _id: { slug: "$_id.slug" },
-          name: { $first: "$name" },
-          prices: { $push: "$prices" },
-          slug: { $first: "$slug" },
-          image: { $first: "$image" },
-          country: { $first: "$country" },
-          trademark: { $first: "$trademark" },
-          unit: { $first: "$unit" },
-          weight: { $first: "$weight" },
+        {
+          $sort: { "prices.created_at": -1 },
         },
-      },
-      {
-        $set: {
-          _id: "$$REMOVE",
+        {
+          $group: {
+            _id: { slug: "$slug", store: "$prices.store", city: "$prices.city" },
+            name: { $first: "$name" },
+            prices: { $first: "$prices" },
+            slug: { $first: "$slug" },
+            image: { $first: "$image" },
+            country: { $first: "$country" },
+            trademark: { $first: "$trademark" },
+            unit: { $first: "$unit" },
+            weight: { $first: "$weight" },
+          },
         },
-      },
-    ]);
+        {
+          $group: {
+            _id: { slug: "$_id.slug" },
+            name: { $first: "$name" },
+            prices: { $push: "$prices" },
+            slug: { $first: "$slug" },
+            image: { $first: "$image" },
+            country: { $first: "$country" },
+            trademark: { $first: "$trademark" },
+            unit: { $first: "$unit" },
+            weight: { $first: "$weight" },
+          },
+        },
+        {
+          $set: {
+            _id: "$$REMOVE",
+          },
+        },
+      ],
+      { allowDiskUse: true },
+    );
   }
 
   async aggregatePrices(
@@ -76,119 +79,125 @@ export class ProductsRepository {
     city: string,
     period: Period,
   ): Promise<Pick<Price, "price" | "store" | "created_at">[]> {
-    return this.model.aggregate([
-      {
-        $match: {
-          slug: slug,
+    return this.model.aggregate(
+      [
+        {
+          $match: {
+            slug: slug,
+          },
         },
-      },
-      {
-        $unwind: "$prices",
-      },
-      {
-        $match: {
-          "prices.city": city,
+        {
+          $unwind: "$prices",
         },
-      },
-      {
-        $sort: { "prices.created_at": -1 },
-      },
-      {
-        $group: {
-          _id: "$name",
-          prices: { $addToSet: "$prices" },
+        {
+          $match: {
+            "prices.city": city,
+          },
         },
-      },
-      {
-        $project: {
-          _id: 0,
-          prices: {
-            $map: {
-              input: {
-                $filter: {
-                  input: "$prices",
-                  as: "price",
-                  cond: {
-                    $eq: [
-                      { $dateTrunc: { date: "$$NOW", unit: period, timezone: "Europe/Kiev" } },
-                      { $dateTrunc: { date: "$$price.created_at", unit: period, timezone: "Europe/Kiev" } },
-                    ],
+        {
+          $sort: { "prices.created_at": -1 },
+        },
+        {
+          $group: {
+            _id: "$name",
+            prices: { $addToSet: "$prices" },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            prices: {
+              $map: {
+                input: {
+                  $filter: {
+                    input: "$prices",
+                    as: "price",
+                    cond: {
+                      $eq: [
+                        { $dateTrunc: { date: "$$NOW", unit: period, timezone: "Europe/Kiev" } },
+                        { $dateTrunc: { date: "$$price.created_at", unit: period, timezone: "Europe/Kiev" } },
+                      ],
+                    },
                   },
                 },
-              },
-              as: "price",
-              in: {
-                price: "$$price.price",
-                store: "$$price.store",
-                created_at: "$$price.created_at",
+                as: "price",
+                in: {
+                  price: "$$price.price",
+                  store: "$$price.store",
+                  created_at: "$$price.created_at",
+                },
               },
             },
           },
         },
-      },
-      {
-        $unwind: "$prices",
-      },
-      {
-        $replaceRoot: { newRoot: "$prices" },
-      },
-    ]);
+        {
+          $unwind: "$prices",
+        },
+        {
+          $replaceRoot: { newRoot: "$prices" },
+        },
+      ],
+      { allowDiskUse: true },
+    );
   }
 
   async findBySlug(slug: string, city?: string): Promise<Product[]> {
     const cityMatch = city ? city : { $exists: true };
 
-    return this.model.aggregate([
-      {
-        $match: {
-          slug: slug,
+    return this.model.aggregate(
+      [
+        {
+          $match: {
+            slug: slug,
+          },
         },
-      },
-      {
-        $unwind: "$prices",
-      },
-      {
-        $match: {
-          "prices.city": cityMatch,
+        {
+          $unwind: "$prices",
         },
-      },
-      {
-        $sort: { "prices.created_at": -1 },
-      },
-      {
-        $group: {
-          _id: { name: "$name", store: "$prices.store", city: "$prices.city" },
-          id: { $first: "$_id" },
-          prices: { $first: "$prices" },
-          slug: { $first: "$slug" },
-          image: { $first: "$image" },
-          country: { $first: "$country" },
-          trademark: { $first: "$trademark" },
-          unit: { $first: "$unit" },
-          weight: { $first: "$weight" },
+        {
+          $match: {
+            "prices.city": cityMatch,
+          },
         },
-      },
-      {
-        $group: {
-          _id: { name: "$_id.name" },
-          id: { $first: "$id" },
-          prices: { $push: "$prices" },
-          slug: { $first: "$slug" },
-          image: { $first: "$image" },
-          country: { $first: "$country" },
-          trademark: { $first: "$trademark" },
-          unit: { $first: "$unit" },
-          weight: { $first: "$weight" },
+        {
+          $sort: { "prices.created_at": -1 },
         },
-      },
-      {
-        $set: {
-          name: "$_id.name",
-          _id: "$id",
-          id: "$$REMOVE",
+        {
+          $group: {
+            _id: { name: "$name", store: "$prices.store", city: "$prices.city" },
+            id: { $first: "$_id" },
+            prices: { $first: "$prices" },
+            slug: { $first: "$slug" },
+            image: { $first: "$image" },
+            country: { $first: "$country" },
+            trademark: { $first: "$trademark" },
+            unit: { $first: "$unit" },
+            weight: { $first: "$weight" },
+          },
         },
-      },
-    ]);
+        {
+          $group: {
+            _id: { name: "$_id.name" },
+            id: { $first: "$id" },
+            prices: { $push: "$prices" },
+            slug: { $first: "$slug" },
+            image: { $first: "$image" },
+            country: { $first: "$country" },
+            trademark: { $first: "$trademark" },
+            unit: { $first: "$unit" },
+            weight: { $first: "$weight" },
+          },
+        },
+        {
+          $set: {
+            name: "$_id.name",
+            _id: "$id",
+            id: "$$REMOVE",
+          },
+        },
+      ],
+      { allowDiskUse: true },
+    );
   }
 
   async findAll(page: number, sort: Sort, city?: string): Promise<AggregationResults[]> {
@@ -210,110 +219,116 @@ export class ProductsRepository {
         break;
     }
 
-    return this.model.aggregate([
-      {
-        $unwind: "$prices",
-      },
-      {
-        $match: {
-          "prices.city": cityMatch,
+    return this.model.aggregate(
+      [
+        {
+          $unwind: "$prices",
         },
-      },
-      {
-        $sort: { "prices.created_at": -1 },
-      },
-      {
-        $group: {
-          _id: { name: "$name", store: "$prices.store", city: "$prices.city", weight: "$weight", unit: "$unit" },
-          prices: { $first: "$prices" },
-          slug: { $first: "$slug" },
-          image: { $first: "$image" },
-          country: { $first: "$country" },
-          trademark: { $first: "$trademark" },
-          unit: { $first: "$unit" },
-          weight: { $first: "$weight" },
+        {
+          $match: {
+            "prices.city": cityMatch,
+          },
         },
-      },
-      {
-        $group: {
-          _id: { name: "$_id.name", weight: "$_id.weight", unit: "$_id.unit" },
-          prices: { $push: "$prices" },
-          slug: { $first: "$slug" },
-          image: { $first: "$image" },
-          country: { $first: "$country" },
-          trademark: { $first: "$trademark" },
-          unit: { $first: "$unit" },
-          weight: { $first: "$weight" },
+        {
+          $sort: { "prices.created_at": -1 },
         },
-      },
-      {
-        $set: {
-          name: "$_id.name",
-          _id: "$$REMOVE",
+        {
+          $group: {
+            _id: { name: "$name", store: "$prices.store", city: "$prices.city", weight: "$weight", unit: "$unit" },
+            prices: { $first: "$prices" },
+            slug: { $first: "$slug" },
+            image: { $first: "$image" },
+            country: { $first: "$country" },
+            trademark: { $first: "$trademark" },
+            unit: { $first: "$unit" },
+            weight: { $first: "$weight" },
+          },
         },
-      },
-      {
-        $match: {
-          $expr: { $gt: [{ $size: "$prices" }, 0] },
+        {
+          $group: {
+            _id: { name: "$_id.name", weight: "$_id.weight", unit: "$_id.unit" },
+            prices: { $push: "$prices" },
+            slug: { $first: "$slug" },
+            image: { $first: "$image" },
+            country: { $first: "$country" },
+            trademark: { $first: "$trademark" },
+            unit: { $first: "$unit" },
+            weight: { $first: "$weight" },
+          },
         },
-      },
-      {
-        $sort: sortCondition,
-      },
-      {
-        $facet: {
-          results: [
-            {
-              $skip: 30 * (page - 1),
-            },
-            {
-              $limit: 30,
-            },
-          ],
-          count: [{ $count: "count" }],
+        {
+          $set: {
+            name: "$_id.name",
+            _id: "$$REMOVE",
+          },
         },
-      },
-      {
-        $addFields: {
-          count: { $arrayElemAt: ["$count.count", 0] },
+        {
+          $match: {
+            $expr: { $gt: [{ $size: "$prices" }, 0] },
+          },
         },
-      },
-    ]);
+        {
+          $sort: sortCondition,
+        },
+        {
+          $facet: {
+            results: [
+              {
+                $skip: 30 * (page - 1),
+              },
+              {
+                $limit: 30,
+              },
+            ],
+            count: [{ $count: "count" }],
+          },
+        },
+        {
+          $addFields: {
+            count: { $arrayElemAt: ["$count.count", 0] },
+          },
+        },
+      ],
+      { allowDiskUse: true },
+    );
   }
 
   async searchAggregation(query: string): Promise<{ ids: string[] }[]> {
-    return this.model.aggregate([
-      {
-        $match: {
-          $text: {
-            $search: query,
+    return this.model.aggregate(
+      [
+        {
+          $match: {
+            $text: {
+              $search: query,
+            },
           },
         },
-      },
-      {
-        $project: {
-          slug: 1,
-          score: { $meta: "textScore" },
-        },
-      },
-      {
-        $match: {
-          score: {
-            $gt: 0.7,
+        {
+          $project: {
+            slug: 1,
+            score: { $meta: "textScore" },
           },
         },
-      },
-      {
-        $sort: {
-          score: -1,
+        {
+          $match: {
+            score: {
+              $gt: 0.7,
+            },
+          },
         },
-      },
-      {
-        $group: {
-          _id: 1,
-          ids: { $push: "$_id" },
+        {
+          $sort: {
+            score: -1,
+          },
         },
-      },
-    ]);
+        {
+          $group: {
+            _id: 1,
+            ids: { $push: "$_id" },
+          },
+        },
+      ],
+      { allowDiskUse: true },
+    );
   }
 }

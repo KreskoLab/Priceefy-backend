@@ -55,92 +55,95 @@ export class CategoriesRepository {
         break;
     }
 
-    return this.model.aggregate([
-      {
-        $match: {
-          slug: slug,
+    return this.model.aggregate(
+      [
+        {
+          $match: {
+            slug: slug,
+          },
         },
-      },
-      {
-        $lookup: {
-          from: "products",
-          foreignField: "_id",
-          localField: "products",
-          pipeline: [
-            {
-              $unwind: "$prices",
-            },
-            {
-              $match: {
-                "prices.store": storeMatch,
-                "prices.city": cityMatch,
+        {
+          $lookup: {
+            from: "products",
+            foreignField: "_id",
+            localField: "products",
+            pipeline: [
+              {
+                $unwind: "$prices",
               },
-            },
-            {
-              $sort: { "prices.created_at": -1 },
-            },
-            {
-              $group: {
-                _id: { slug: "$slug", store: "$prices.store", city: "$prices.city" },
-                name: { $first: "$name" },
-                prices: { $first: "$prices" },
-                slug: { $first: "$slug" },
-                image: { $first: "$image" },
-                country: { $first: "$country" },
-                trademark: { $first: "$trademark" },
-                unit: { $first: "$unit" },
-                weight: { $first: "$weight" },
+              {
+                $match: {
+                  "prices.store": storeMatch,
+                  "prices.city": cityMatch,
+                },
               },
-            },
-            {
-              $group: {
-                _id: { slug: "$_id.slug" },
-                name: { $first: "$name" },
-                prices: { $push: "$prices" },
-                slug: { $first: "$slug" },
-                image: { $first: "$image" },
-                country: { $first: "$country" },
-                trademark: { $first: "$trademark" },
-                unit: { $first: "$unit" },
-                weight: { $first: "$weight" },
+              {
+                $sort: { "prices.created_at": -1 },
               },
-            },
-            {
-              $set: {
-                _id: "$$REMOVE",
+              {
+                $group: {
+                  _id: { slug: "$slug", store: "$prices.store", city: "$prices.city" },
+                  name: { $first: "$name" },
+                  prices: { $first: "$prices" },
+                  slug: { $first: "$slug" },
+                  image: { $first: "$image" },
+                  country: { $first: "$country" },
+                  trademark: { $first: "$trademark" },
+                  unit: { $first: "$unit" },
+                  weight: { $first: "$weight" },
+                },
               },
-            },
-            {
-              $sort: sortCondition,
-            },
-          ],
-          as: "products",
+              {
+                $group: {
+                  _id: { slug: "$_id.slug" },
+                  name: { $first: "$name" },
+                  prices: { $push: "$prices" },
+                  slug: { $first: "$slug" },
+                  image: { $first: "$image" },
+                  country: { $first: "$country" },
+                  trademark: { $first: "$trademark" },
+                  unit: { $first: "$unit" },
+                  weight: { $first: "$weight" },
+                },
+              },
+              {
+                $set: {
+                  _id: "$$REMOVE",
+                },
+              },
+              {
+                $sort: sortCondition,
+              },
+            ],
+            as: "products",
+          },
         },
-      },
-      {
-        $unwind: "$products",
-      },
-      {
-        $replaceRoot: { newRoot: "$products" },
-      },
-      {
-        $facet: {
-          results: [
-            {
-              $skip: 30 * (page - 1),
-            },
-            {
-              $limit: 30,
-            },
-          ],
-          count: [{ $count: "count" }],
+        {
+          $unwind: "$products",
         },
-      },
-      {
-        $addFields: {
-          count: { $arrayElemAt: ["$count.count", 0] },
+        {
+          $replaceRoot: { newRoot: "$products" },
         },
-      },
-    ]);
+        {
+          $facet: {
+            results: [
+              {
+                $skip: 30 * (page - 1),
+              },
+              {
+                $limit: 30,
+              },
+            ],
+            count: [{ $count: "count" }],
+          },
+        },
+        {
+          $addFields: {
+            count: { $arrayElemAt: ["$count.count", 0] },
+          },
+        },
+      ],
+      { allowDiskUse: true },
+    );
   }
 }

@@ -36,96 +36,105 @@ export class StoresRepository {
         break;
     }
 
-    return this.model.aggregate([
-      {
-        $match: {
-          slug: slug,
+    return this.model.aggregate(
+      [
+        {
+          $match: {
+            slug: slug,
+          },
         },
-      },
-      {
-        $lookup: {
-          from: "products",
-          foreignField: "_id",
-          localField: "products",
-          pipeline: [
-            {
-              $unwind: "$prices",
-            },
-            {
-              $match: {
-                "prices.store": slug,
-                "prices.city": cityMatch,
+        {
+          $lookup: {
+            from: "products",
+            foreignField: "_id",
+            localField: "products",
+            pipeline: [
+              {
+                $unwind: "$prices",
               },
-            },
-            {
-              $sort: { "prices.created_at": -1 },
-            },
-            {
-              $group: {
-                _id: { name: "$name", store: "$prices.store", city: "$prices.city", weight: "$weight", unit: "$unit" },
-                prices: { $first: "$prices" },
-                slug: { $first: "$slug" },
-                image: { $first: "$image" },
-                country: { $first: "$country" },
-                trademark: { $first: "$trademark" },
-                unit: { $first: "$unit" },
-                weight: { $first: "$weight" },
+              {
+                $match: {
+                  "prices.store": slug,
+                  "prices.city": cityMatch,
+                },
               },
-            },
-            {
-              $group: {
-                _id: { name: "$_id.name", weight: "$_id.weight", unit: "$_id.unit" },
-                prices: { $push: "$prices" },
-                slug: { $first: "$slug" },
-                image: { $first: "$image" },
-                country: { $first: "$country" },
-                trademark: { $first: "$trademark" },
-                unit: { $first: "$unit" },
-                weight: { $first: "$weight" },
+              {
+                $sort: { "prices.created_at": -1 },
               },
-            },
-            {
-              $set: {
-                name: "$_id.name",
-                _id: "$$REMOVE",
+              {
+                $group: {
+                  _id: {
+                    name: "$name",
+                    store: "$prices.store",
+                    city: "$prices.city",
+                    weight: "$weight",
+                    unit: "$unit",
+                  },
+                  prices: { $first: "$prices" },
+                  slug: { $first: "$slug" },
+                  image: { $first: "$image" },
+                  country: { $first: "$country" },
+                  trademark: { $first: "$trademark" },
+                  unit: { $first: "$unit" },
+                  weight: { $first: "$weight" },
+                },
               },
-            },
-            {
-              $match: {
-                $expr: { $gt: [{ $size: "$prices" }, 0] },
+              {
+                $group: {
+                  _id: { name: "$_id.name", weight: "$_id.weight", unit: "$_id.unit" },
+                  prices: { $push: "$prices" },
+                  slug: { $first: "$slug" },
+                  image: { $first: "$image" },
+                  country: { $first: "$country" },
+                  trademark: { $first: "$trademark" },
+                  unit: { $first: "$unit" },
+                  weight: { $first: "$weight" },
+                },
               },
-            },
-            {
-              $sort: sortCondition,
-            },
-          ],
-          as: "products",
+              {
+                $set: {
+                  name: "$_id.name",
+                  _id: "$$REMOVE",
+                },
+              },
+              {
+                $match: {
+                  $expr: { $gt: [{ $size: "$prices" }, 0] },
+                },
+              },
+              {
+                $sort: sortCondition,
+              },
+            ],
+            as: "products",
+          },
         },
-      },
-      {
-        $unwind: "$products",
-      },
-      {
-        $replaceRoot: { newRoot: "$products" },
-      },
-      {
-        $facet: {
-          results: [
-            {
-              $skip: 30 * (page - 1),
-            },
-            {
-              $limit: 30,
-            },
-          ],
-          count: [{ $count: "count" }],
+        {
+          $unwind: "$products",
         },
-      },
-      {
-        $addFields: {
-          count: { $arrayElemAt: ["$count.count", 0] },
+        {
+          $replaceRoot: { newRoot: "$products" },
         },
-      },
-    ]);
+        {
+          $facet: {
+            results: [
+              {
+                $skip: 30 * (page - 1),
+              },
+              {
+                $limit: 30,
+              },
+            ],
+            count: [{ $count: "count" }],
+          },
+        },
+        {
+          $addFields: {
+            count: { $arrayElemAt: ["$count.count", 0] },
+          },
+        },
+      ],
+      { allowDiskUse: true },
+    );
   }
 }
