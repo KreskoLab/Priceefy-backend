@@ -21,7 +21,7 @@ export class Product {
   @Prop({ type: ObjectId, ref: "Category" })
   category: string;
 
-  @Prop([Object])
+  @Prop({ type: [Object] })
   prices: Price[];
 
   @Prop()
@@ -38,3 +38,5 @@ export class Product {
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
+ProductSchema.index({ "prices.discount": 1 });
+ProductSchema.index({ "prices.price": 1 });
